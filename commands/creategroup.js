@@ -61,14 +61,13 @@ module.exports = {
             }
             const text = `Found group. Role: ${role}, TextCh: ${tc}, Voice: ${vc}
 Elders: ${elders.map(e => {return `<@${e}>`}).join(', ')}\nMembers:\`\`\`\n${Object.keys(members).join('\n')}\`\`\``;
-            console.log(elders)
             // ask confirmation
             if(!(await confirm(message.channel, message.author.id, text)))
                 return;
         } else {
             return await message.reply(`Specify option (new/auto).`);
         }
-        groups.obj[args[1].toLowerCase()] = {
+        groups.obj[name] = {
             role: role.id,
             channel: tc.id,
             vc: vc.id,
@@ -76,6 +75,5 @@ Elders: ${elders.map(e => {return `<@${e}>`}).join(', ')}\nMembers:\`\`\`\n${Obj
             members: members ? members : {}
         }
         groups.jsonDump();
-
     }
 };
