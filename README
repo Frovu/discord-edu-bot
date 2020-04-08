@@ -22,13 +22,22 @@
 
 COMMANDS
 
-.creategroup
-.getlist
-.register
-.reset
+.creategroup (admin)
+Usage: `.creategroup икбо-07-19 new|auto [elder_id]`
 .setlist
+Usage: `.setlist икбо-07-19\nMember1\nMember2\n...`
 .addmember
+Usage: `.addmember икбо-07-19 name...`
 .remove
+Usage: `.remove икбо-07-19 name...`
+.getlist
+Usage: `.getlist икбо-07-19`
+.register
+Зарегистрировать юзера в группе под именем.
+Usage: `.register <target> икбо-07-19 name...`
+.reset
+Кикнуть юзера из его группы.
+Usage: `.reset <target>`
 
 JSON
 
