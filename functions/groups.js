@@ -23,6 +23,9 @@ module.exports.jsonDump = jsonDump;
 module.exports.onMessage = async function(message) {
 	if(message.channel.id !== config.channels.entry)
 		return;
+	// ignore admins and mods
+	if(message.member.roles.cache.has(config.roles.admin) || message.member.roles.cache.has(config.roles.moderator))
+		return;
 	const args = message.content.split(/ +/g);
 	const g = args[0].toLowerCase();
 	if(!groups.hasOwnProperty(g))
