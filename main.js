@@ -5,6 +5,7 @@ const Discord = require('discord.js');
 log = require('./functions/logs.js');
 
 const commands = require('./functions/cmds.js');
+const groups = require('./functions/groups.js');
 
 // unhandled rejection
 process.on('unhandledRejection', (reason) => {
@@ -16,8 +17,7 @@ process.on('unhandledRejection', (reason) => {
 log('BOT', `Starting edu bot.\n  Node version: ${process.version}\n  Discord.js version: ${Discord.version}`);
 
 // Discord bot client. The bot itself.
-// should be global for use in other modules.
-client = new Discord.Client({forceFetchUsers: true});
+const client = new Discord.Client({forceFetchUsers: true});
 // Connection to Discord API.
 client.login(tokens.discordbot);
 
@@ -43,6 +43,7 @@ client.on("message", async message => {
 		// Ignoring other bots.
 		if(message.author.bot) return;
 		await commands.process(message);
+		await groups.onMessage(message);
 	} catch(e) {
 		log(`ERROR`, `Failed on.message: ${e.stack}`);
 	}

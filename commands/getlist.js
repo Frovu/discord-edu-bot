@@ -1,13 +1,10 @@
-// set list of group members
+// get list of group members
 
 const groups = require('../functions/groups.js');
 const config = require('../json/config.json');
-const confirm = require('../functions/reactConfirm.js')
 
-// ex:
-// .setlist икбо-07-19\nMember1\nMember2
 module.exports = {
-    aliases: ["setlist"],
+    aliases: ["getlist", "list", "список"],
     exec: async function(message) {
         const g = message.content.split(/\n| +/g)[1].toLowerCase();
         if(!groups.obj.hasOwnProperty(g))
@@ -17,18 +14,19 @@ module.exports = {
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
         // parse list
-        let members = {};
-        for(const m of message.content.split('\n').slice(1)) {
-            if(groups.obj[g].members[m]) // keep old users
-                members[m] = groups.obj[g].members[m];
+        let list = ''; let u;
+        for(const m in groups.obj[g].members) {
+            if(groups.obj[g].members[m])
+                u = await message.guild.members.fetch(groups.obj[g].members[m]);
             else
-                members[m] = null;
+                u = false;
+            list+=`\`${m}\`: ${u?u:'не найден'}\n`;
         }
-        // show preview and ask confirm
-        if(!(await confirm(message.channel, message.author.id,`\`\`\`json\n${JSON.stringify(members, null, 2)}\`\`\``)))
-            return;
-        groups.obj[g].members = members;
-        groups.jsonDump();
-        return await message.reply(`Список \`${g}\` успешно обновлен.`); // not found
+        await message.channel.send({embed: {
+                title: `Список группы \`${g}\`:`,
+                description: list,
+                footer: {text: g}
+            }
+        });
     }
 }
