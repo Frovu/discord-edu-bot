@@ -30,8 +30,8 @@ module.exports = {
     		return await message.reply(`\`${name}\` уже зарегистрирован в группе \`${g}\`.`);
     	// search if user already in some group
     	for(const a in groups.obj)
-    		if(Object.values(groups.obj[a].members).includes(message.member.id))
-    			return await message.reply(`${target.user.tag} уже зарегистрирован в группе \`${a}\` под именем \`${Object.keys(groups.obj[a].members).find(m => groups.obj[a].members[m] === message.member.id)}\`.`);
+    		if(Object.values(groups.obj[a].members).includes(target.id))
+    			return await message.reply(`${target.user.tag} уже зарегистрирован в группе \`${a}\` под именем \`${Object.keys(groups.obj[a].members).find(m => groups.obj[a].members[m] === target.id)}\`.`);
         // ask confirmation
         if(!(await confirm(message.channel, message.author.id, `Вы хотите добавить \`${target.user.tag}\` в группу \`${g}\` как \`${name}\`.`)))
             return;

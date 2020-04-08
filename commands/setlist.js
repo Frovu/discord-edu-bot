@@ -26,9 +26,10 @@ module.exports = {
         // download file
         let members = {}; let file = '';
         const url = message.attachments.first().url;
-        request.head(url, function(err, res, body) {
+        setTimeout(()=>{request.head(url, function(err, res, body) {
 		    request(url).on('data', (data) => {
                 file += data.toString();
+                console.log(data)
             });
             request(url).on('close', async() => {
                 for(const m of file.split('\n')) {
@@ -44,7 +45,7 @@ module.exports = {
                 groups.jsonDump();
                 return await message.reply(`Список \`${g}\` успешно обновлен.`); // not found
             });
-		});
+		});}, 500);
     }
 }
 

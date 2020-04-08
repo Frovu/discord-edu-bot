@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 // log for use in other modules too
 log = require('./functions/logs.js');
 
+const config = require('./json/config.json');
 const commands = require('./functions/cmds.js');
 const groups = require('./functions/groups.js');
 
@@ -35,6 +36,12 @@ client.on("disconnect", function () {
 
 client.on("error", async (err) => {
 	log(`ERROR_EVENT`, `Client error: ${err}`);
+});
+
+client.on("guildMemberAdd", async(member) => {
+	log(`JOIN`, `${member.user.tag} ${member.id}  joined server.`);
+	const ch = await client.channels.fetch(config.channels.entry);
+	await ch.send(`Добро пожаловать, ${member}.\nПожалуйста отправьте в этот канал сообщение вида: \`группа Фамилия И.О.\` чтобы попасть в свою группу.`);
 });
 
 // Message responses
