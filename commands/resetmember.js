@@ -12,7 +12,7 @@ module.exports = {
         // search a group
         const g = Object.keys(groups.obj).find(k => Object.values(groups.obj[k].members).includes(target.id))
         if(!g)
-            return await message.reply(`\`${target.nickname}\` не состоит в группе.`); // not found
+            return await message.reply(`\`${target.user.tag}\` не состоит в группе.`); // not found
         // check if admin or group elder
         if(!message.member.roles.cache.has(config.roles.admin))
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))

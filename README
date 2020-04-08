@@ -25,7 +25,8 @@ COMMANDS
 .creategroup (admin)
 Usage: `.creategroup икбо-07-19 new|auto [elder_id]`
 .setlist
-Usage: `.setlist икбо-07-19\nMember1\nMember2\n...`
+Usage: `.setlist икбо-07-19` with text file attached
+list file: Members names like `Белов С.М.` separated with \\n
 .addmember
 Usage: `.addmember икбо-07-19 name...`
 .remove
