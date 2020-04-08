@@ -18,9 +18,10 @@ module.exports = {
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
         // ask confirm
-        if(!(await confirm(message.channel, message.author.id, `Вы хотите выгнать ${target} из группы \`${g}\`.`)))
+        const name = Object.keys(groups.obj[g].members).find(k => groups.obj[g].members[k] === target.id);
+        if(!(await confirm(message.channel, message.author.id, `Вы хотите выгнать ${target} (\`${name}\`) из группы \`${g}\`.`)))
             return;
-        groups.obj[g].members[Object.keys(groups.obj[g].members).find(k => groups.obj[g].members[k] === target.id)] = null;
+        groups.obj[g].members[name] = null;
         groups.jsonDump();
         // try to remove group role
         target.roles.remove(groups.obj[g].role).then().catch(()=>{});

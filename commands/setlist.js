@@ -33,8 +33,12 @@ module.exports = {
             });
             request(url).on('close', async() => {
                 for(const m of file.split('\n')) {
-                    if(groups.obj[g].members[m]) // keep old users
-                        members[m] = groups.obj[g].members[m];
+                    // search for existing members with same family
+                    const filtered = Object.keys(groups.obj[g].members).filter(a => a.startsWith(m.split(' ')[0]));
+                    // if found two people with same name part, do not keep
+                    console.log(filtered)
+                    if(filtered.length === 1) // keep already existing users
+                        members[m] = groups.obj[g].members[filtered[0]];
                     else
                         members[m] = null;
                 }
