@@ -14,13 +14,13 @@ module.exports = {
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
         // parse list
-        let list = ''; let u;
-        for(const m in groups.obj[g].members) {
+        let list = ''; let u; let i=0;
+        for(const m of Object.keys(groups.obj[g].members).sort()) {
             if(groups.obj[g].members[m])
                 u = await message.guild.members.fetch(groups.obj[g].members[m]);
             else
                 u = false;
-            list+=`\`${m}\`: ${u?u:'не найден'}${groups.obj[g].elders.includes(u.id)?' староста':''}\n`;
+            list+=`\`${++i}.\` \`${m}\`: ${u?u:'не найден'}${groups.obj[g].elders.includes(u.id)?' староста':''}\n`;
         }
         await message.channel.send({embed: {
                 title: `Список группы \`${g}\`:`,

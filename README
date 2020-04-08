@@ -28,7 +28,7 @@ COMMANDS
 .reset
 .setlist
 .addmember
-.rmmember
+.remove
 
 JSON
 
