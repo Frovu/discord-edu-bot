@@ -20,7 +20,7 @@ module.exports = {
                 u = await message.guild.members.fetch(groups.obj[g].members[m]);
             else
                 u = false;
-            list+=`\`${m}\`: ${u?u:'не найден'}\n`;
+            list+=`\`${m}\`: ${u?u:'не найден'}${groups.obj[g].elders.includes(u.id)?' староста':''}\n`;
         }
         await message.channel.send({embed: {
                 title: `Список группы \`${g}\`:`,

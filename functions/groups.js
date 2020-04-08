@@ -36,9 +36,9 @@ module.exports.onMessage = async function(message) {
 	if(groups[g].members[name] && groups[g].members[name] !== message.member.id)
 		return await message.reply(`\`${name}\` уже зарегистрирован в группе \`${g}\`, пожалуйста, обратитесь к старосте своей группы, если это действительно вы.`);
 	// search if user already in some group
-	for(const g in groups)
-		if(Object.values(groups[g].members).includes(message.member.id))
-			return await message.reply(`Вы уже зарегистрированы в группе \`${g}\` под именем \`${Object.keys(groups[g].members).find(m => groups[g].members[m] === message.member.id)}\`, пожалуйста, обратитесь к старосте этой группы, если это какая-то ошибка.`);
+	for(const a in groups)
+		if(Object.values(groups[a].members).includes(message.member.id))
+			return await message.reply(`Вы уже зарегистрированы в группе \`${a}\` под именем \`${Object.keys(groups[a].members).find(m => groups[a].members[m] === message.member.id)}\`, пожалуйста, обратитесь к старосте этой группы, если это какая-то ошибка.`);
 
 	// all checks passed
 	await message.member.roles.add(groups[g].role);
