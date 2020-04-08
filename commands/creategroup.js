@@ -75,5 +75,6 @@ Elders: ${elders.map(e => {return `<@${e}>`}).join(', ')}\nMembers:\`\`\`\n${Obj
             members: members ? members : {}
         }
         groups.jsonDump();
+        log(`NOTE`, `Group created: ${name}`);
     }
 };

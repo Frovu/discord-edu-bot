@@ -25,7 +25,8 @@ module.exports = {
         await message.channel.send({embed: {
                 title: `Список группы \`${g}\`:`,
                 description: list,
-                footer: {text: g}
+                footer: {text: g},
+                color: 3407864
             }
         });
     }
