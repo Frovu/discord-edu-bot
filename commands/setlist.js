@@ -36,7 +36,7 @@ module.exports = {
                 for(const m of file.replace(/\r/g, '').split('\n')) {
                     if(!m) continue;
                     // search for existing members with same family
-                    const found = role.members.array().find(a => a.user.username.startsWith(m.split(' ')[0]+' ') || (a.nickname && (a.nickname.startsWith(m.split(' ')[0]+' ') || a.nickname.split(' ')[1].startsWith(m.split(' ')[0]))));
+                    const found = role.members.array().find(a => a.user.username.startsWith(m.split(' ')[0]+' ') || (a.nickname && (a.nickname.startsWith(m.split(' ')[0]+' ') || (a.nickname.split(' ')[1] && a.nickname.split(' ')[1].startsWith(m.split(' ')[0])))));
                     if(found) // keep already existing users
                         members[m] = found.id;
                     else

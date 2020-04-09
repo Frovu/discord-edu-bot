@@ -22,6 +22,9 @@ module.exports = {
         let note = '';
         let toChange = {};
         for(const m of role.members.array()) {
+            // give student role if needed
+            if(!m.roles.cache.has(config.roles.student))
+                m.roles.add(config.roles.student).then().catch(()=>{log(`ERR`, `Failed to give student role to ${m.user.tag}(${m.id})`)});
             if(!Object.values(groups.obj[g].members).includes(m.id)) {
                 note+=`WARN: ${m} not in list.\n`;
                 continue;
