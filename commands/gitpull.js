@@ -1,7 +1,7 @@
 const child_process = require("child_process");
 
 module.exports = {
-	names: ["reload", "git pull"],
+	aliases: ["reload", "git pull"],
 	exec: async function (message) {
         if(message.author.id !== '236931374722973698') return;
     	let child = child_process.spawn("git", ["pull"]);
