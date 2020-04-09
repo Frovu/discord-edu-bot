@@ -51,6 +51,7 @@ module.exports.onMessage = async function(message) {
 	await message.member.setNickname(name);
 	groups[g].members[name] = message.member.id;
 	jsonDump();
+	log(`NOTE`, `${message.member.user.tag}(${message.member.id}) joined ${g} as ${name}`);
 	// notify in group channel
 	await message.guild.channels.resolve(groups[g].channel).send(`${message.member} присоединяется, добро пожаловать!`);
 }

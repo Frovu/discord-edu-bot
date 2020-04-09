@@ -40,6 +40,7 @@ module.exports = {
     	target.setNickname(name).then().catch(()=>{});
     	groups.obj[g].members[name] = target.id;
     	groups.jsonDump();
+    	log(`NOTE`, `${message.member.user.tag} added ${target.user.tag}(${target.id}) to ${g} as ${name}`);
         await message.reply(`Успешно.`);
     }
 }
