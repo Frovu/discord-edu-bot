@@ -18,7 +18,7 @@ process.on('unhandledRejection', (reason) => {
 log('BOT', `Starting edu bot.\n  Node version: ${process.version}\n  Discord.js version: ${Discord.version}`);
 
 // Discord bot client. The bot itself.
-const client = new Discord.Client({forceFetchUsers: true});
+client = new Discord.Client({forceFetchUsers: true});
 // Connection to Discord API.
 client.login(tokens.discordbot);
 

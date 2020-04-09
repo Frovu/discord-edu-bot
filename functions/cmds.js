@@ -3,6 +3,7 @@ const fs = require('fs')
 const config = require('../json/config.json');
 // great variable
 let cmds = {};
+const dm = ['ping', 'reload'];
 
 // recursively import commands from ./commands
 function importCommands(path) {
@@ -31,6 +32,7 @@ module.exports.process = async function (message) {
     if(message.author.bot) return false;
     if(message.content.indexOf(config.prefix) !== 0) return false;
     const command = message.content.slice(config.prefix.length).split(/\n|\r| +/g)[0].toLowerCase();
+    if(!message.guild && !dm.includes(command)) return false;
 	try {
         // check if command exists
         if(!cmds.hasOwnProperty(command))
