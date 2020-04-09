@@ -41,7 +41,7 @@ client.on("error", async (err) => {
 client.on("guildMemberAdd", async(member) => {
 	log(`JOIN`, `${member.user.tag} ${member.id}  joined server.`);
 	const ch = await client.channels.fetch(config.channels.entry);
-	await ch.send(`Добро пожаловать, ${member}.\nПожалуйста отправьте в этот канал сообщение вида: \`группа Фамилия И.О.\` чтобы попасть в свою группу.`);
+	await ch.send(`Добро пожаловать, ${member}.\nЕсли вы преподаватель, свяжитесь с администратором, иначе пожалуйста отправьте в этот канал сообщение вида: \`группа Фамилия И.О.\` чтобы попасть в свою группу. Если вы староста, свяжитесь с администратором сервера для добавления вашей группы.`);
 });
 
 // Message responses

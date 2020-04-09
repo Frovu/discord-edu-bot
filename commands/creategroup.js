@@ -16,18 +16,25 @@ module.exports = {
         const name = args[1].toLowerCase();
         if(groups.obj.hasOwnProperty(name))
             return await message.reply(`Group already exist: \`${name}\``);
-        // check for valid elder
+        const color = getColor();
         if(args[2] === 'new') {
             // create new group
             try{var elder = await message.guild.members.fetch(args[3]);}catch(e){}
             if(!elder)
                 return await message.reply(`Can\'t resolve elder from \`${args[3]}\``);
+            if(!(await confirm(message.channel, message.author.id, {embed: {
+                title: `Создать \`${name}\`?`,
+                description: `Староста: ${elder}`,
+                color:  parseInt(color, 16)
+            }})))
+                return;
             // create role
             var role = await message.guild.roles.create({data: {
                 name: name.toUpperCase(),
                 hoist: true,
                 mentionable: true,
-                permissions: 0
+                permissions: 0,
+                color: parseInt(color, 16)
             }})
             var tc = await message.guild.channels.create(name, {
                 permissionOverwrites: [
@@ -37,7 +44,7 @@ module.exports = {
                     {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'},
                 ]
             });
-            var vc = await message.guild.channels.create(name, {
+            var vc = await message.guild.channels.create(name.toUpperCase(), {
                 type: 'voice',
                 permissionOverwrites: [
                     {id: config.roles.moderator, allow: 'MUTE_MEMBERS', type: 'role'},
@@ -48,6 +55,7 @@ module.exports = {
             });
         } else if(args[2] === 'auto') {
             // automatically search for group role and channels
+            await message.guild.roles.fetch();
             var role = await message.guild.roles.cache.find(r => r.name.toLowerCase() === name);
             var tc = await message.guild.channels.cache.find(c => c.name.toLowerCase() === name && c.type === 'text');
             var vc = await message.guild.channels.cache.find(c => c.name.toLowerCase() === name && c.type === 'voice');
@@ -63,7 +71,6 @@ module.exports = {
                 members[m.nickname] = m.id;
                 list+=`\`${++i}.\` ${m}${elders.includes(m.id)?' elder':''}\n`;
             }
-            const color = getColor();
             const embed = {
                 title: `Automatically creating \`${name}\``,
                 fields: [
@@ -80,6 +87,19 @@ module.exports = {
             // ask confirmation
             if(!(await confirm(message.channel, message.author.id, {embed: embed})))
                 return;
+            // update channels perms
+            await tc.overwritePermissions([
+                {id: config.roles.moderator, allow: 'VIEW_CHANNEL', type: 'role'},
+                {id: config.roles.elder, allow: 'MANAGE_MESSAGES', type: 'role'},
+                {id: role.id, allow: 'VIEW_CHANNEL', type: 'role'},
+                {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'},
+            ]);
+            await vc.overwritePermissions([
+                {id: config.roles.moderator, allow: 'MUTE_MEMBERS', type: 'role'},
+                {id: config.roles.elder, allow: 'MUTE_MEMBERS', type: 'role'},
+                {id: role.id, allow: 'VIEW_CHANNEL', type: 'role'},
+                {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'},
+            ]);
             // change role color
             await role.setColor(color);
         } else {

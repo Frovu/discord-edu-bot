@@ -9,6 +9,8 @@ module.exports = {
     aliases: ["reset"],
     exec: async function(message) {
         const target = await resolve(message);
+        if(!target)
+            return await message.reply(`Цель не найдена.`); 
         // search a group
         const g = Object.keys(groups.obj).find(k => Object.values(groups.obj[k].members).includes(target.id))
         if(!g)

@@ -43,9 +43,10 @@ module.exports.onMessage = async function(message) {
 	}
 	// all checks passed
 	await message.member.roles.add(groups[g].role);
+	await message.member.roles.add(config.roles.student);
 	await message.member.setNickname(name);
 	groups[g].members[name] = message.member.id;
 	jsonDump();
 	// notify in group channel
-	await message.guild.channels.resolve(groups[g].channel).send(`${message.member} присоединился, добро пожаловать!`);
+	await message.guild.channels.resolve(groups[g].channel).send(`${message.member} присоединяется, добро пожаловать!`);
 }

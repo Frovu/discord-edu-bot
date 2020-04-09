@@ -36,9 +36,9 @@ module.exports = {
         if(!(await confirm(message.channel, message.author.id, `Вы хотите добавить \`${target.user.tag}\` в группу \`${g}\` как \`${name}\`.`)))
             return;
     	// all checks passed
-    	await message.member.roles.add(groups.obj[g].role);
-    	message.member.setNickname(name).then().catch(()=>{});
-    	groups.obj[g].members[name] = message.member.id;
+    	await target.roles.add(groups.obj[g].role);
+    	target.setNickname(name).then().catch(()=>{});
+    	groups.obj[g].members[name] = target.id;
     	groups.jsonDump();
         await message.reply(`Успешно.`);
     }

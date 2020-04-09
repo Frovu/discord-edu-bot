@@ -32,12 +32,12 @@ module.exports = {
                 file += data;
             });
             msg.on('close', async() => {
+                const role = await message.guild.roles.fetch(groups.obj[g].role);
                 for(const m of file.replace(/\r/g, '').split('\n')) {
                     // search for existing members with same family
-                    const filtered = Object.keys(groups.obj[g].members).filter(a => a.startsWith(m.split(' ')[0]));
-                    // if found two people with same name part, do not keep
-                    if(filtered.length === 1) // keep already existing users
-                        members[m] = groups.obj[g].members[filtered[0]];
+                    const found = role.members.array().find(a => a.user.username.startsWith(m.split(' ')[0]+' ') || (a.nickname && a.nickname.startsWith(m.split(' ')[0]+' ')));
+                    if(found) // keep already existing users
+                        members[m] = found.id;
                     else
                         members[m] = null;
                 }
@@ -46,22 +46,8 @@ module.exports = {
                     return;
                 groups.obj[g].members = members;
                 groups.jsonDump();
-                return await message.reply(`Список \`${g}\` успешно обновлен.`); // not found
+                return await message.reply(`Список \`${g}\` успешно обновлен.\n`); // not found
             });
 		});
     }
 }
-
-exports.Download = function(uri, filename, callback) {
-	try {
-		request = require('request');
-		request.head(uri, function(err, res, body){
-			console.log('content-type:', res.headers['content-type']);
-			console.log('content-length:', res.headers['content-length']);
-
-			request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-		});
-	} catch (e){
-		logs.Log(`ERROR`, `Exception in Download:\n${e.stack}`);
-	}
-};

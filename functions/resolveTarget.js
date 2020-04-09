@@ -8,8 +8,10 @@
 module.exports = async function(message, resolvable, ifmention=true){
 	// try to resolve arg
 	let target;
-	if(typeof resolvable === "undefined") // by default all args
+	if(typeof resolvable === "undefined") { // by default all args
 		resolvable = message.content.split(/ +/g).slice(1).join(' ');
+		if(resolvable.length<4) return false;
+	}
 	resolvable = resolvable.toLowerCase();
 	try{ target = await message.guild.members.fetch(resolvable); }catch(e){} // try as snowflake
 	if(ifmention === true && message.mentions.members.array().length>0)
