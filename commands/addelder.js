@@ -14,7 +14,7 @@ module.exports = {
         const target = await resolve(message, args[1]);
         if(!target)
             return await message.reply(`Target not found.`); // not found
-        // check if admin or group elder
+        // check if admin
         if(!message.member.roles.cache.has(config.roles.admin))
             return;
         if(args[2])
@@ -26,6 +26,8 @@ module.exports = {
         // show preview and ask confirm
         if(!(await confirm(message.channel, message.author.id, `Сделать ${target} старостой \`${g}\`?`)))
             return;
+        // give elder role
+        target.roles.add(config.roles.elder).then().catch(()=>{log(`ERR`, `Failed to give elder role to ${target.user.tag}(${target.id})`)});
         groups.obj[g].elders.push(target.id);
         groups.jsonDump();
         //give role

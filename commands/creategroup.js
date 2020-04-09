@@ -28,6 +28,8 @@ module.exports = {
                 color:  parseInt(color, 16)
             }})))
                 return;
+            // give elder role
+            elder.roles.add(config.roles.elder).then().catch(()=>{log(`ERR`, `Failed to give elder role to ${elder.user.tag}(${elder.id})`)});
             // create role
             var role = await message.guild.roles.create({data: {
                 name: name.toUpperCase(),
