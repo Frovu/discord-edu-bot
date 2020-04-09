@@ -30,7 +30,11 @@ module.exports.onMessage = async function(message) {
 	const g = args[0].toLowerCase();
 	if(!groups.hasOwnProperty(g))
 		return await message.reply(`Группа не найдена: \`${g}\``);
-	const name = args.slice(1).join(' ');
+	let name = args.slice(1).join(' ');
+	if(!groups[g].members.hasOwnProperty(name)) { // try removing spaces and adding dot
+		name = args[1].concat(' ').concat(args.slice(2).join(''));
+		if(!name.endsWith('.')) name += '.';
+	}
 	if(!groups[g].members.hasOwnProperty(name))
 		return await message.reply(`\`${name?name:'   '}\` не найден в списке группы \`${g}\`, пожалуйста, обратитесь к старосте своей группы, если все введено верно.`);
 	if(groups[g].members[name] && groups[g].members[name] !== message.member.id)
