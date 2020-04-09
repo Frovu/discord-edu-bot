@@ -9,7 +9,7 @@
 @returns Promise (resolved with bool)
 */
 
-module.exports = async function(channel, author, text, timer=30000){
+module.exports = async function(channel, author, text, timer=60000){
 	try {
 		// ask a question
 		const confirmMsg = await channel.send(text);

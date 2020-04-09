@@ -16,11 +16,14 @@ module.exports = {
         // parse list
         let list = ''; let u; let i=0;
         for(const m of Object.keys(groups.obj[g].members).sort()) {
-            if(groups.obj[g].members[m])
-                u = await message.guild.members.fetch(groups.obj[g].members[m]);
-            else
+            if(groups.obj[g].members[m]) {
+                try{
+                    u = await message.guild.members.fetch(groups.obj[g].members[m]);
+                }catch(e){u=undefined; log(`WARN`, `${groups.obj[g].members[m]} aka ${m} from ${g} not found.`)}
+            } else {
                 u = false;
-            list+=`\`${++i}.\` \`${m}\`: ${u?u:'не найден'}${groups.obj[g].elders.includes(u.id)?' староста':''}\n`;
+            }
+            list+=`\`${++i}.\` \`${m}\`: ${u?u:'не найден'}${u&&groups.obj[g].elders.includes(u.id)?' староста':''}\n`;
         }
         await message.channel.send({embed: {
                 title: `Список группы \`${g}\`:`,

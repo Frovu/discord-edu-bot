@@ -28,14 +28,14 @@ module.exports = {
             }
             if(!groups.obj[g].members.hasOwnProperty(m.nickname)) {
                 let newn = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a]===m.id);
-                note += `${m.nickname} => ${newn}\n`;
+                note += `\`${m.nickname} => ${newn}\`\n`;
                 toChange[newn] = m;
             }
         }
-        if(!(await confirm(message.channel, message.author.id, `changes to be done:\n\`\`\`\n${note}\`\`\``)))
+        if(!(await confirm(message.channel, message.author.id, `changes to be done:\n\n${note}`)))
             return;
         for(const a in toChange) {
-            toChange[a].setNickname(a).then().catch(()=>{log(`ERR`, `Failed to set nick for ${toChange[a].user.tag} ${toChange[a].id}`)}); 
+            toChange[a].setNickname(a).then().catch(()=>{log(`ERR`, `Failed to set nick for ${toChange[a].user.tag} ${toChange[a].id}`)});
         }
     }
 }
