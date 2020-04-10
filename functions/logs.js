@@ -17,7 +17,7 @@ let logStream = fs.createWriteStream((path+getFileName(new Date())), {flags:'a'}
 function logInFile(date, msg, topic){
     // create new log file if needed
 	if(!logStream.path.endsWith(getFileName(date))) {
-        createLogStreams(new Date());
+        logStream = fs.createWriteStream((path+getFileName(date)), {flags:'a'});
 		module.exports('BOT', `Creating new logInFile: ${getFileName(date)}`);
 	}
     logStream.write(msg + '\n');
