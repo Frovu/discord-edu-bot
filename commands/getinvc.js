@@ -1,10 +1,10 @@
-// get list of group members
+// get list of group members in vc
 
 const groups = require('../functions/groups.js');
 const config = require('../json/config.json');
 
 module.exports = {
-    aliases: ["getlist", "list", "список"],
+    aliases: ["vclist", "присутствие", "наличие"],
     exec: async function(message) {
         const args = message.content.split(/\n| +/g);
         const g = groups.findGroup(args[1]);
@@ -14,23 +14,21 @@ module.exports = {
         if(!message.member.roles.cache.has(config.roles.admin) && !message.member.roles.cache.has(config.roles.teacher))
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
+        const vc = await message.guild.channels.cache.find(c => c.name.toLowerCase() === g && c.type === 'voice');
+        if(!vc) return await message.reply(`vc not found.`);
         // parse list
-        let list = ''; let u; let i=0;
-        for(const m of Object.keys(groups.obj[g].members).sort()) {
-            if(groups.obj[g].members[m]) {
-                try{
-                    u = await message.guild.members.fetch(groups.obj[g].members[m]);
-                }catch(e){u=undefined; log(`WARN`, `${groups.obj[g].members[m]} aka ${m} from ${g} not found.`)}
-            } else {
-                u = false;
+        let list = []; let i=0;
+        for(const m of vc.members.array()) {
+            const name = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a] === m.id);
+            if(name) {
+                list.push(name.replace(/\+/g, ''));
             }
-            list+=`\`${++i}.\` \`${m.replace(/\+/g, '')}\`: ${u?u:'не найден'}${u&&groups.obj[g].elders.includes(u.id)?' староста':''}\n`;
         }
         await message.channel.send({embed: {
-                title: `Список группы \`${g}\`:`,
-                description: list,
+                title: `Список группы \`${g}\` (в канале):`,
+                description: list.sort().map(e => {return `\`${++i}.\` ${e}`}).join('\n'),
                 footer: {text: g},
-                color: 3407864
+                color: 8781774
             }
         });
     }
