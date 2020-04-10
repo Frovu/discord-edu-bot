@@ -57,6 +57,8 @@ module.exports = {
                     {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'},
                 ]
             });
+            elder.roles.add(config.roles.student).then().catch(()=>{log(`ERR`, `Failed to give student role to ${elder.user.tag}(${elder.id})`)});
+            elder.roles.add(role).then().catch(()=>{log(`ERR`, `Failed to give g role to ${elder.user.tag}(${elder.id})`)});
         } else if(args[2] === 'auto') {
             // automatically search for group role and channels
             await message.guild.roles.fetch();
