@@ -27,8 +27,8 @@ module.exports = {
                 note+=`WARN: ${m} not in list.\n`;
                 continue;
             }
-            if(!groups.obj[g].members.hasOwnProperty(m.nickname)) {
-                let newn = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a]===m.id);
+            let newn = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a]===m.id);
+            if(groups.getNick(newn) !== m.nickname) {
                 note += `\`${m.nickname} => ${groups.getNick(newn)}\`\n`;
                 toChange[newn] = m;
             }
