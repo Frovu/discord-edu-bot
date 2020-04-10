@@ -29,7 +29,7 @@ module.exports = {
             }
             if(!groups.obj[g].members.hasOwnProperty(m.nickname)) {
                 let newn = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a]===m.id);
-                note += `\`${m.nickname} => ${newn}\`\n`;
+                note += `\`${m.nickname} => ${groups.getNick(newn)}\`\n`;
                 toChange[newn] = m;
             }
         }
