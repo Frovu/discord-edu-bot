@@ -43,29 +43,40 @@ Usage: `.reset <target>`
 JSON
 
 groups.json
-	{
-		"икбо-07-19": {
-			role: "role_id",
-			channel: "ch_id",
-			vc: "ch_id",
-			elders: ["id"]
-			members: {
-				"Белов Семён": "id",
-				"Миляев Илья": null
-			}
+{
+	"икбо-07-19": {
+		role: "role_id",
+		channel: "ch_id",
+		vc: "ch_id",
+		elders: ["id"]
+		members: {
+			"Белов Семён": "id",
+			"Миляев Илья": null
 		}
-		...
 	}
+	...
+}
+
+teachers.json
+{
+	"id": {
+		"name": "Full Name",
+		"cathedra": "ВМ-2",
+		"channel": "id",
+		"groups": [names of groups teached...]
+	}
+	...
+}
 
 lessions.json
-	{
-		"type": "lecture"
-		"teachers": ["id", ...],
-		"groups": [],
-		"attended": {
-			"id": {
-				time: time spent on lession in s
-				lastJoin: timestamp
-			}
+{
+	"type": "lecture"
+	"teachers": ["id", ...],
+	"groups": [],
+	"attended": {
+		"id": {
+			time: time spent on lession in s
+			lastJoin: timestamp
 		}
 	}
+}

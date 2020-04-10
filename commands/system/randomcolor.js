@@ -1,4 +1,4 @@
-const getColor = require('../functions/getcolor.js')
+const getColor = require('../../functions/getcolor.js')
 
 module.exports = {
     aliases: ["color"],

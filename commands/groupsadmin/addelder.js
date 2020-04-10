@@ -1,9 +1,9 @@
 // add one member to group list
 
-const groups = require('../functions/groups.js');
-const config = require('../json/config.json');
-const confirm = require('../functions/reactConfirm.js');
-const resolve = require('../functions/resolveTarget.js');
+const groups = require('../../functions/groups.js');
+const config = require('../../json/config.json');
+const confirm = require('../../functions/reactConfirm.js');
+const resolve = require('../../functions/resolveTarget.js');
 
 // ex:
 // .add икбо-07-19 name

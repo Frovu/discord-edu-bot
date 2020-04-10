@@ -1,8 +1,8 @@
 
-const groups = require('../functions/groups.js');
-const config = require('../json/config.json');
-const confirm = require('../functions/reactConfirm.js');
-const getColor = require('../functions/getcolor.js');
+const groups = require('../../functions/groups.js');
+const config = require('../../json/config.json');
+const confirm = require('../../functions/reactConfirm.js');
+const getColor = require('../../functions/getcolor.js');
 
 // ex:
 // .creategroup икбо-07-19 new elder_id

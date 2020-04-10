@@ -1,8 +1,8 @@
 // set list of group members
 
-const groups = require('../functions/groups.js');
-const config = require('../json/config.json');
-const confirm = require('../functions/reactConfirm.js')
+const groups = require('../../functions/groups.js');
+const config = require('../../json/config.json');
+const confirm = require('../../functions/reactConfirm.js')
 
 // ex:
 // .setlist икбо-07-19\nMember1\nMember2

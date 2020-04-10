@@ -1,9 +1,9 @@
 // register group member
 
-const groups = require('../functions/groups.js');
-const config = require('../json/config.json');
-const confirm = require('../functions/reactConfirm.js');
-const resolve = require('../functions/resolveTarget.js');
+const groups = require('../../functions/groups.js');
+const config = require('../../json/config.json');
+const confirm = require('../../functions/reactConfirm.js');
+const resolve = require('../../functions/resolveTarget.js');
 
 // ex:
 // .register <target> икбо-07-19 "na me"

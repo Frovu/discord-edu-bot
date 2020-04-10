@@ -1,7 +1,7 @@
 // get list of group members in vc
 
-const groups = require('../functions/groups.js');
-const config = require('../json/config.json');
+const groups = require('../../functions/groups.js');
+const config = require('../../json/config.json');
 
 module.exports = {
     aliases: ["vclist", "присутствие", "наличие"],
