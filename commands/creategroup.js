@@ -13,8 +13,8 @@ module.exports = {
         if(!message.member.roles.cache.has(config.roles.admin))
             return;
         const args = message.content.split(/ +/g);
-        const name = groups.findGroup(args[1]);
-        if(name)
+        const name = args[1];
+        if(groups.findGroup(args[1]))
             return await message.reply(`Group already exist: \`${name}\``);
         const color = getColor();
         if(args[2] === 'new') {
