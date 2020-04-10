@@ -17,16 +17,16 @@ module.exports = {
         const vc = await message.guild.channels.cache.find(c => c.name.toLowerCase() === g && c.type === 'voice');
         if(!vc) return await message.reply(`vc not found.`);
         // parse list
-        let list = []; let i=0;
-        for(const m of vc.members.array()) {
+        let list = ''; let i=0;
+        for(const m of vc.members.array().sort((am,bm)=>{return am.nickname<bm.nickname?-1:1})) {
             const name = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a] === m.id);
             if(name) {
-                list.push(name.replace(/\+/g, ''));
+                list += `${m.voice.deaf?'**(без звука)**':`\`${++i}\`.`} ${name.replace(/\+/g, '')}\n`;
             }
         }
         await message.channel.send({embed: {
                 title: `Список группы \`${g}\` (в канале):`,
-                description: list.sort().map(e => {return `\`${++i}.\` ${e}`}).join('\n'),
+                description: list,
                 footer: {text: g},
                 color: 8781774
             }
