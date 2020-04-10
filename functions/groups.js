@@ -44,7 +44,7 @@ function findGroup(namePart) {
 	return false;
 }
 // convert name from list to user nickname
-function getNick(name) => {
+function getNick(name) {
 	return name.includes('+') ? name.replace(/\+/g, '') : name.split(' ').slice(0, 2).join(' ');
 }
 
