@@ -45,16 +45,16 @@ module.exports = {
                     {id: config.roles.moderator, allow: 'VIEW_CHANNEL', type: 'role'},
                     {id: config.roles.elder, allow: 'MANAGE_MESSAGES', type: 'role'},
                     {id: role.id, allow: 'VIEW_CHANNEL', type: 'role'},
-                    {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'},
+                    {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'}
                 ]
             });
             var vc = await message.guild.channels.create(name.toUpperCase(), {
                 type: 'voice',
                 permissionOverwrites: [
-                    {id: config.roles.moderator, allow: 'MUTE_MEMBERS', type: 'role'},
+                    {id: config.roles.moderator, allow: ['VIEW_CHANNEL'], type: 'role'},
                     {id: config.roles.elder, allow: 'MUTE_MEMBERS', type: 'role'},
                     {id: role.id, allow: 'VIEW_CHANNEL', type: 'role'},
-                    {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'},
+                    {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'}
                 ]
             });
             elder.roles.add(config.roles.student).then().catch(()=>{log(`ERR`, `Failed to give student role to ${elder.user.tag}(${elder.id})`)});
