@@ -21,9 +21,9 @@ module.exports = {
         if(!message.member.roles.cache.has(config.roles.admin))
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
-        const name = args.slice(3).join(' ');
 
-    	if(!groups.obj[g].members.hasOwnProperty(name))
+        const name = groups.find(args.slice(3).join(' '));
+    	if(!name)
     		return await message.reply(`\`${name?name:'   '}\` не найден в списке группы \`${g}\`.`);
         // another user registered with this name
     	if(groups.obj[g].members[name] && groups.obj[g].members[name] !== message.member.id)
