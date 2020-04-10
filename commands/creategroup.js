@@ -112,7 +112,7 @@ module.exports = {
             channel: tc.id,
             vc: vc.id,
             elders: elders ? elders : [elder.id],
-            members: members ? members : {}
+            members: members ? members : {`${elder.user.username}`: elder.id}
         }
         groups.jsonDump();
         log(`NOTE`, `Group created: ${name}`);
