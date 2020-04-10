@@ -22,7 +22,7 @@ module.exports = {
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
 
-        const name = groups.find(args.slice(3).join(' '));
+        const name = groups.find(g, args.slice(3).join(' '));
     	if(!name)
     		return await message.reply(`\`${name?name:'   '}\` не найден в списке группы \`${g}\`.`);
         // another user registered with this name

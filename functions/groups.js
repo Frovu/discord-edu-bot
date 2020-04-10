@@ -62,7 +62,7 @@ module.exports.onMessage = async function(message) {
 	const g = findGroup(args[0]);
 	if(!g)
 		return await message.reply(`Группа не найдена: \`${args[0]}\``);
-	const name = find(args.slice(1).join(' '));
+	const name = find(g, args.slice(1).join(' '));
 	if(!name)
 		return await message.reply(`\`${args.slice(1).join(' ').concat(' ')}\` не найден в списке группы \`${g}\`, пожалуйста, обратитесь к старосте своей группы, если все введено верно.`);
 	// if name already registered
