@@ -44,6 +44,17 @@ client.on("guildMemberAdd", async(member) => {
 	await ch.send(`Добро пожаловать, ${member}.\nЕсли вы преподаватель, свяжитесь с администратором, иначе пожалуйста отправьте в этот канал сообщение вида: \`группа Фамилия И.О.\` чтобы попасть в свою группу. Если вы староста, свяжитесь с администратором сервера для добавления вашей группы.`);
 });
 
+// notify admin if sbdy joins empty tech support channel
+client.on("voiceStateUpdate", async (oldState, newState) => {
+	if(newState.channel.id === config.channels.support) {
+		if(newState.channel.members.array().find(m => m.roles.cache.has(config.roles.admin)))
+			return; // admin in channel
+		const ac = await client.channels.fetch(config.channels.admin);
+		await ac.send(`<@&${config.roles.admin}> user joined (empty) support vc: ${newState.member}`);
+		log(`NOTE`, `${newState.member.nickname} ${newState.member.id} joined support vc.`);
+	}
+});
+
 // Message responses
 client.on("message", async message => {
 	try {
