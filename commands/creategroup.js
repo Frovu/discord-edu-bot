@@ -31,6 +31,8 @@ module.exports = {
             // give elder role
             elder.roles.add(config.roles.elder).then().catch(()=>{log(`ERR`, `Failed to give elder role to ${elder.user.tag}(${elder.id})`)});
             // create role
+            var members = {};
+            members[elder.user.username] = elder.id;
             var role = await message.guild.roles.create({data: {
                 name: name.toUpperCase(),
                 hoist: true,
@@ -112,7 +114,7 @@ module.exports = {
             channel: tc.id,
             vc: vc.id,
             elders: elders ? elders : [elder.id],
-            members: members ? members : {`${elder.user.username}`: elder.id}
+            members: members
         }
         groups.jsonDump();
         log(`NOTE`, `Group created: ${name}`);
