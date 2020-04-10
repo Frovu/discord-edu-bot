@@ -14,9 +14,9 @@ module.exports = {
         const target = await resolve(message, args[1]);
         if(!target)
             return await message.reply(`Пользователь не найден.`); // not found
-        const g = args[2].toLowerCase();
-        if(!groups.obj.hasOwnProperty(g))
-            return await message.reply(`Группа не найдена: \`${g}\``); // not found
+        const g = groups.findGroup(args[2]);
+        if(!g)
+            return await message.reply(`Группа не найдена: \`${args[2]}\``); // not found
         // check if admin or group elder
         if(!message.member.roles.cache.has(config.roles.admin))
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))

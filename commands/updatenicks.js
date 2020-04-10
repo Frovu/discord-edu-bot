@@ -12,11 +12,9 @@ module.exports = {
         if(!message.member.roles.cache.has(config.roles.admin))
             return
         const args = message.content.split(/\n| +/g);
-        if(!args[1])
-            return await message.reply(`Укажите название группы.`); // not found
-        const g = args[1].toLowerCase();
-        if(!groups.obj.hasOwnProperty(g))
-            return await message.reply(`Группа не найдена: \`${g}\``); // not found
+        const g = groups.findGroup(args[1]);
+        if(!g)
+            return await message.reply(`Группа не найдена: \`${args[2]}\``); // not found
         // set new nicks
         const role = await message.guild.roles.fetch(groups.obj[g].role);
         let note = '';
@@ -38,7 +36,7 @@ module.exports = {
         if(!(await confirm(message.channel, message.author.id, `changes to be done:\n\n${note}`)))
             return;
         for(const a in toChange) {
-            toChange[a].setNickname(a).then().catch(()=>{log(`ERR`, `Failed to set nick for ${toChange[a].user.tag} ${toChange[a].id}`)});
+            toChange[a].setNickname(groups.getNick(a)).then().catch(()=>{log(`ERR`, `Failed to set nick for ${toChange[a].user.tag} ${toChange[a].id}`)});
         }
     }
 }

@@ -17,10 +17,9 @@ module.exports = {
         // check if admin
         if(!message.member.roles.cache.has(config.roles.admin))
             return;
-        if(args[2])
-            var g = args[2].toLowerCase();
-        if(!groups.obj.hasOwnProperty(g))
-            return await message.reply(`Группа не найдена: \`${g}\``); // not found
+        const g = groups.findGroup(args[2]);
+        if(!g)
+            return await message.reply(`Группа не найдена: \`${args[2]}\``); // not found
         if(groups.obj[g].elders.hasOwnProperty(target.id))
             return await message.reply(`\`${target.user.tag}\` уже староста \`${g}\`.`);
         // show preview and ask confirm

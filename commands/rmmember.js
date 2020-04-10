@@ -9,15 +9,16 @@ const confirm = require('../functions/reactConfirm.js')
 module.exports = {
     aliases: ["remove"],
     exec: async function(message) {
-        const g = message.content.split(/\n| +/g)[1].toLowerCase();
-        if(!groups.obj.hasOwnProperty(g))
-            return await message.reply(`Группа не найдена: \`${g}\``); // not found
+        const args = message.content.split(/\n| +/g);
+        const g = groups.findGroup(args[1]);
+        if(!g)
+            return await message.reply(`Группа не найдена: \`${args[1]}\``); // not found
         // check if admin or group elder
         if(!message.member.roles.cache.has(config.roles.admin))
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
-        const name = message.content.split(/\n| +/g).slice(2).join(' ');
-        if(!groups.obj[g].members.hasOwnProperty(name))
+        const name = groups.find(g, args.slice(2).join(' '));
+        if(!name)
             return await message.reply(`\`${name}\` не найден в списке \`${g}\`.`);
         // show preview and ask confirm
         if(!(await confirm(message.channel, message.author.id, `Удалить \`${name}\` из списка \`${g}\`?`)))

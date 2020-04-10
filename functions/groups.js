@@ -20,23 +20,52 @@ const jsonDump = () => fs.writeFileSync('./'+jsonPath, JSON.stringify(groups, nu
 });
 module.exports.jsonDump = jsonDump;
 
+// search for student by first word, otherwise search by startsWith(string)
+// returns name from list (key)
+function find(gr, namePart) {
+	let found = Object.keys(groups[gr].members).filter(s => s.replace(/\+/g, '').split(' ')[0] === namePart.split(/ +/)[0]);
+	// if found any
+	if(found.length > 0) {
+		if(found.length > 1) {
+			// found several
+			found = Object.keys(groups[gr].members).filter(s => s.replace(/\+/g, '').startsWith(namePart));
+			if(found.length === 1)
+				return found[0];
+		} else
+			return found[0];
+	}
+	return false;
+}
+// search for group ikbo-07 -> ikbo-07-19
+function findGroup(namePart) {
+	let found = Object.keys(groups).filter(s => s.startsWith(namePart.toLowerCase()));
+	if(found.length === 1)
+		return found[0];
+	return false;
+}
+// convert name from list to user nickname
+function getNick(name) => {
+	return name.includes('+') ? name.replace(/\+/g, '') : name.split(' ').slice(0, 2).join(' ');
+}
+
+module.exports.getNick = getNick;
+module.exports.find = find;
+module.exports.findGroup = findGroup;
+
 module.exports.onMessage = async function(message) {
 	if(message.channel.id !== config.channels.entry)
 		return;
-	// ignore admins and mods
-	if(message.member.roles.cache.has(config.roles.admin) || message.member.roles.cache.has(config.roles.moderator))
+	// ignore admins / mods / elders
+	if(message.member.roles.cache.has(config.roles.admin) || message.member.roles.cache.has(config.roles.moderator) || message.member.roles.cache.has(config.roles.elder))
 		return;
 	const args = message.content.split(/ +/g);
-	const g = args[0].toLowerCase();
-	if(!groups.hasOwnProperty(g))
-		return await message.reply(`Группа не найдена: \`${g}\``);
-	let name = args.slice(1).join(' ');
-	if(!groups[g].members.hasOwnProperty(name)) { // try removing spaces and adding dot
-		name = args[1].concat(' ').concat(args.slice(2).join(''));
-		if(!name.endsWith('.')) name += '.';
-	}
-	if(!groups[g].members.hasOwnProperty(name))
-		return await message.reply(`\`${name?name:'   '}\` не найден в списке группы \`${g}\`, пожалуйста, обратитесь к старосте своей группы, если все введено верно.`);
+	const g = findGroup(args[0]);
+	if(!g)
+		return await message.reply(`Группа не найдена: \`${args[0]}\``);
+	const name = find(args.slice(1).join(' '));
+	if(!name)
+		return await message.reply(`\`${args.slice(1).join(' ').concat(' ')}\` не найден в списке группы \`${g}\`, пожалуйста, обратитесь к старосте своей группы, если все введено верно.`);
+	// if name already registered
 	if(groups[g].members[name] && groups[g].members[name] !== message.member.id)
 		return await message.reply(`\`${name}\` уже зарегистрирован в группе \`${g}\`, пожалуйста, обратитесь к старосте своей группы, если это действительно вы.`);
 	// search if user already in some group
@@ -48,7 +77,7 @@ module.exports.onMessage = async function(message) {
 	// all checks passed
 	await message.member.roles.add(groups[g].role);
 	await message.member.roles.add(config.roles.student);
-	await message.member.setNickname(name);
+	await message.member.setNickname(getNick(name));
 	groups[g].members[name] = message.member.id;
 	jsonDump();
 	log(`NOTE`, `${message.member.user.tag}(${message.member.id}) joined ${g} as ${name}`);

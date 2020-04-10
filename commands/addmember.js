@@ -9,14 +9,15 @@ const confirm = require('../functions/reactConfirm.js')
 module.exports = {
     aliases: ["addmember"],
     exec: async function(message) {
-        const g = message.content.split(/\n| +/g)[1].toLowerCase();
-        if(!groups.obj.hasOwnProperty(g))
-            return await message.reply(`Группа не найдена: \`${g}\``); // not found
+        const args = message.content.split(/\n| +/g);
+        const g = groups.findGroup(args[1]);
+        if(!g)
+            return await message.reply(`Группа не найдена: \`${args[1]}\``); // not found
         // check if admin or group elder
         if(!message.member.roles.cache.has(config.roles.admin))
             if(!message.member.roles.cache.has(config.roles.elder) || !groups.obj[g].elders.includes(message.author.id))
                 return await message.reply(`Вы не являетесь старостой группы \`${g}\``);
-        const name = message.content.split(/\n| +/g).slice(2).join(' ');
+        const name = args.slice(2).join(' ');
         if(groups.obj[g].members.hasOwnProperty(name))
             return await message.reply(`\`${name}\` уже есть в списке.`);
         // show preview and ask confirm
