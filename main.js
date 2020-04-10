@@ -46,7 +46,7 @@ client.on("guildMemberAdd", async(member) => {
 
 // notify admin if sbdy joins empty tech support channel
 client.on("voiceStateUpdate", async (oldState, newState) => {
-	if(newState.channel.id === config.channels.support) {
+	if(newState.channel && newState.channel.id === config.channels.support) {
 		if(newState.channel.members.array().find(m => m.roles.cache.has(config.roles.admin)))
 			return; // admin in channel
 		const ac = await client.channels.fetch(config.channels.admin);

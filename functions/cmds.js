@@ -3,7 +3,7 @@ const fs = require('fs')
 const config = require('../json/config.json');
 // great variable
 let cmds = {};
-const dm = ['ping', 'reload'];
+const dm = ['ping', 'reload', 'log'];
 
 // recursively import commands from ./commands
 function importCommands(path) {
