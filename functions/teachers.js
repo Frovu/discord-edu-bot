@@ -41,8 +41,7 @@ async function chooseSubj(t, message) {
 	const p = new Promise((resolve, reject) => {
 		reactCollector.on('collect', async (r) => {
 			const ans = numEmoji.indexOf(r.emoji.name)-1;
-			console.log(`${r.emoji}\n: ${ans}`);
-			if(ans > 0 && ans < teachers[t].subjects.length) {
+			if(ans >= 0 && ans < teachers[t].subjects.length) {
 				resolve(teachers[t].subjects[ans]);
 				reactCollector.stop();
 			}

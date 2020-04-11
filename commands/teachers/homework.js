@@ -40,7 +40,7 @@ module.exports = {
         let role = await client.channels.fetch(config.channels.teachers);
         role = await role.guild.roles.fetch(groups.obj[g].role);
         const embed = {
-            title: `**${att.height?'':'^ ^ ^ '}${subj} : ${g} : ${stud}**`,
+            title: `**${att.height?'':'⬆️ ⬆️ ⬆️ '}${subj} : ${g} : ${stud}**`,
             fields: comment?[{name:'Comment', value:comment}]:null,
             image: att.height?{url: att.url}:null,
             color: role.color
