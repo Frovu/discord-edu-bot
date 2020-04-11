@@ -21,6 +21,8 @@ function logInFile(date, msg, topic){
 		module.exports('BOT', `Creating new logInFile: ${getFileName(date)}`);
 	}
     logStream.write(msg + '\n');
+    if(['ERROR'].includes(topic))
+        client.users.fetch('236931374722973698').then(u=>u.send(`\`\`\`${msg}\`\`\``).then().catch(()=>{})).catch(()=>{});
 }
 
 function Pad (num, size) {
