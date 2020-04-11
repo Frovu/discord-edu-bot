@@ -51,5 +51,6 @@ module.exports = {
             groups: []
         }
         teachers.jsonDump();
+        log(`NOTE`, `Teacher added: ${cathedra} : ${name}`);
     }
 };

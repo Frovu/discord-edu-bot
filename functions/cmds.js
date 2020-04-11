@@ -3,7 +3,7 @@ const fs = require('fs')
 const config = require('../json/config.json');
 // great variable
 let cmds = {};
-const dm = ['ping', 'reload', 'log'];
+let dm = ['ping', 'reload', 'log'];
 
 // recursively import commands from ./commands
 function importCommands(path) {
@@ -18,6 +18,8 @@ function importCommands(path) {
     			let imported = require('../'+path+'/'+file);
                 for(const a of imported.aliases)
                     cmds[a] = imported;
+                if(imported.dm)
+                    dm = dm.concat(imported.aliases);
         	});
         });
     } catch(e) {
