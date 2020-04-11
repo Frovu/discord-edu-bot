@@ -15,8 +15,8 @@ module.exports = {
             if(!g)
                 return await message.reply(`Цель не найдена.`);
             const nm = groups.find(g, args.slice(2).join(' '));
-            if(!nm)
-                return await message.reply(`Цель не найдена в группе ${g}.`);
+            if(!message.member.roles.cache.has(config.roles.admin) || !nm)
+                return await message.reply(`Цель не найдена в группе ${g}. (Или вы не администратор)`);
             groups.obj[g].members[nm] = null;
             groups.jsonDump();
             return await message.reply(`Успешно.`);
