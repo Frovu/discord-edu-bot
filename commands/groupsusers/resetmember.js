@@ -8,9 +8,19 @@ const resolve = require('../../functions/resolveTarget.js');
 module.exports = {
     aliases: ["reset"],
     exec: async function(message) {
-        const target = await resolve(message);
-        if(!target)
-            return await message.reply(`Цель не найдена.`);
+        const args = message.content.split(/\n| +/g);
+        const target = await resolve(message, args[1]);
+        if(!target) {
+            const g = groups.findGroup(args[1]);
+            if(!g)
+                return await message.reply(`Цель не найдена.`);
+            const nm = groups.find(g, args.slice(2).join(' '));
+            if(!nm)
+                return await message.reply(`Цель не найдена в группе ${g}.`);
+            groups.obj[g].members[nm] = null;
+            groups.jsonDump();
+            return await message.reply(`Успешно.`);
+        }
         // search a group
         const g = Object.keys(groups.obj).find(k => Object.values(groups.obj[k].members).includes(target.id))
         if(!g)
@@ -27,6 +37,6 @@ module.exports = {
         groups.jsonDump();
         // try to remove group role
         target.roles.remove(groups.obj[g].role).then().catch(()=>{});
-        return await message.reply(`Успешно.`); // not found
+        return await message.reply(`Успешно.`);
     }
 }
