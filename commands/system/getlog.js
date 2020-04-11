@@ -16,6 +16,8 @@ async function lastLog(logFiles, author, a=false) {
 module.exports = {
 	aliases: ["log", "getlog"],
 	exec: async function (message) {
+        if(!message.member.roles.cache.has(config.roles.admin))
+            return;
         const args = message.content.split(/\n| +/g);
         const logFiles = fs.readdirSync('./logs');
         if(!args[2]) {
