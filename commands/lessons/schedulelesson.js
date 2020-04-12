@@ -20,7 +20,7 @@ module.exports = {
         if(!['лк', 'пр'].includes(type))
             return await message.reply(`Неизвестный тип пары: \`${type}\``);
 
-        const ai = at ? 0 : 2; // args number increment
+        let ai = at ? 0 : 2; // args number increment
         const rpt = args[1+ai];
         if(rpt !== 'now') {
             var date = new Date(args[3+ai]);
@@ -35,13 +35,15 @@ module.exports = {
             const time = args[2+ai].split(':');
             date.setHours(time[0],time[1],0,0);
         } else {
+            ai-=1;
             var date = new Date(Date.now()+80000); // +80sec
         }
-
+        console.log(date)
         const subj = await teachers.chooseSubj(t, message);
+        if(!subj) return;
         // parse groups and duration
         let gs = []; let duration = 120*60000; let gnt = [];
-        for(const ag in args.slice(3+ai)) {
+        for(const ag of args.slice(3+ai)) {
             if(ag.includes(':')) continue;
             if(ag.includes('d=')) {
                 duration = parseInt(ag.replace('d=', ''));
@@ -54,18 +56,19 @@ module.exports = {
             if(!teachers.obj[t].groups.includes(g))
                 gnt.push(g);
         }
+        if(gs.length < 1)
+            return await message.reply(`Укажите группы.`);
         // ask confirmation
         if(!(await confirm(message.channel, message.author.id, {embed: {
             title: `Задать пару **${subj} ${type}** ?`,
-            description: gnt.length>0?`Внимание! Группы (${gnt.map(h=>`\`${g}\``).join(', ')}) не указаны у преподавателя.`:``,
             fields: [
                 {name: 'Преподаватель', value: teachers.obj[t].name, inline: true},
                 {name: 'Группы', value: gs.map(g => g.toUpperCase()).join(', '), inline: true},
-                {name: 'Время начала', value: time.toString().replace(/:.. .+/, ''), inline: true},
-                {name: 'Начнется через', value: `${Math.floor((time-Date.now())/60000)} минут`, inline: true},
+                {name: 'Время начала', value: date.toString().replace(/:.. .+/, ''), inline: true},
+                {name: 'Начнется через', value: `${Math.floor((date-Date.now())/60000)} минут`, inline: true},
                 {name: 'Продолжительность', value: `${Math.floor(duration/60000)} минут`, inline: true},
                 {name: 'Повторение', value: `${['now', 'once'].includes(rpt)?'один раз':(rpt==='weekly'?'еженедельно':(rpt==='biweekly'?'каждые две недели':'???'))}`, inline: true}
-            ],
+            ].concat(gnt.length>0?[{name:'Внимание!',value:`Группы (${gnt.map(g=>`\`${g}\``).join(', ')}) не указаны у преподавателя.`}]:[]),
             footer: teachers.obj[t].cathedra
         }})))
             return;
