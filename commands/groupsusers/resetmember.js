@@ -33,6 +33,7 @@ module.exports = {
         const name = Object.keys(groups.obj[g].members).find(k => groups.obj[g].members[k] === target.id);
         if(!(await confirm(message.channel, message.author.id, `Вы хотите выгнать ${target} (\`${name}\`) из группы \`${g}\`.`)))
             return;
+        await target.roles.remove(groups.obj[g].role);
         groups.obj[g].members[name] = null;
         groups.jsonDump();
         // try to remove group role
