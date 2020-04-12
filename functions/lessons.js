@@ -54,7 +54,7 @@ module.exports.spawn = async function (t, subj, time, type, gs, duration=7200000
             fields: [
                 {name: 'Преподаватель', value: teachers.obj[t].name, inline: true},
                 {name: 'Группы', value: gs.map(g => g.toUpperCase()).join(', '), inline: true},
-                {name: 'Время начала', value: time.toString().replace(/:.. .+/, ''), inline: true}
+                {name: 'Время начала', value: time.toString().replace(/:.. .+/, ''), inline: true},
                 {name: 'Начнется через', value: `${Math.floor((time-Date.now())/60000)} минут`, inline: true}
             ],
             footer: teachers.obj[t].cathedra

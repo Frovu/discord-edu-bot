@@ -9,14 +9,14 @@ const confirm = require('../../functions/reactConfirm.js');
 // if used from wrappers (by teacher) (.лк .пр): .лк repeat_type time date
 module.exports = {
     aliases: ["schedule", "задать"],
-    exec: async function(message, at, type) {
+    exec: async function(message, at, atype) {
         const args = message.content.split(/\n| +/g);
         if(!message.member.roles.cache.has(config.roles.admin) && (!at || args[1] === 'now'))
             return;
         const t = at ? at : args[1];
         if(!teachers.obj.hasOwnProperty(t))
             return await message.reply(`Преподаватель не найден.`);
-        const type = at ? type : args[2];
+        const type = at ? atype : args[2];
         if(!['лк', 'пр'].includes(type))
             return await message.reply(`Неизвестный тип пары: \`${type}\``);
 
