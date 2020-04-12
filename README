@@ -70,13 +70,34 @@ teachers.json
 
 lessions.json
 {
-	"type": "lecture"
-	"teachers": ["id", ...],
-	"groups": [],
-	"attended": {
-		"id": {
-			time: time spent on lession in s
-			lastJoin: timestamp
+	"ongoing": {
+		"teacher_id": {
+			"subj": "subj",
+			"start": timestamp,
+			"duration": duration,
+			"tc": id,
+			"vc": id,
+			"groups": [...],
+			"attended": {
+				"id": {
+					time: time spent on lession in s
+					lastJoin: timestamp or null
+				}
+				...
+			}
 		}
-	}
+	},
+	"scheduled": [
+		{
+			"subj": "subj",
+			"time": timestamp,
+			"weekday": for weekly,
+			"weekeven": for biweekly,
+			"type": "lecture",
+			"repeat": "once/weekly/biweekly",
+			"teacher": "id",
+			"groups": [...]
+		}
+	]
+
 }
