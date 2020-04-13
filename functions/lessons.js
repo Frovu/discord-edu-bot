@@ -37,12 +37,12 @@ module.exports.onReady = async function() {
 	}, 5000);
 	// setup timers for lessons endings
 	for(const l in lessons.ongoing) {
-		const toEnd = lessons.ongoing[l].start + lessons.ongoing[l].duration - Date.now();
+		const toEnd = lessons.ongoing[l].start.valueOf() + lessons.ongoing[l].duration - Date.now();
 		if(toEnd > 0)
-			client.setTimer(()=>{exports.end(l, lessons.ongoing[l].tc, lessons.ongoing[l].teacher);}, toEnd);
+			client.setTimeout(()=>{exports.end(l, lessons.ongoing[l].tc, lessons.ongoing[l].teacher);}, toEnd);
 		else
 			exports.end(l, lessons.ongoing[l].tc, lessons.ongoing[l].teacher);
-		log(`LESN`, `lesson ${l} will end in ${toEnd} seconds`);
+		log(`LESN`, `lesson ${l} will end in ${toEnd/1000} seconds`);
 	}
 }
 
@@ -100,7 +100,8 @@ module.exports.spawn = async function (t, subj, time, type, gs, duration=5400000
 			attended: {}
 		}
 		jsonDump();
-		log(`NOTE`, `Lession spawned t:${t},gs:${gs} ${time.toISOString().replace(/\..+/, '')}`);
+		client.setTimeout(()=>{exports.end(vc.id, tc.id, t);}, time.valueOf()+duration-Date.now());
+		log(`NOTE`, `Lession spawned t:${t},gs:${gs} ${time.toISOString().replace(/\..+/, '')} ends in ${time.valueOf()+duration-Date.now()/1000} sec`);
 		return true;
     } catch(e) {
         log(`ERROR`, `!!! Failed to spawn lession of ${teachers.obj[t].name} for ${gs}:\n${e.stack}`);

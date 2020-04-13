@@ -5,8 +5,8 @@ const teachers = require('../../functions/teachers.js');
 const config = require('../../json/config.json');
 const confirm = require('../../functions/reactConfirm.js');
 
-// if used as standalone command(admin): .schedule teacher_id type repeat_type time date
-// if used from wrappers (by teacher) (.лк .пр): .лк repeat_type time date
+// if used as standalone command(admin): .schedule teacher_id type repeat_type time date groups
+// if used from wrappers (by teacher) (.лк .пр): .лк repeat_type time date groups
 module.exports = {
     aliases: ["schedule", "задать"],
     exec: async function(message, at, atype) {
@@ -42,11 +42,11 @@ module.exports = {
         const subj = await teachers.chooseSubj(t, message);
         if(!subj) return;
         // parse groups and duration
-        let gs = []; let duration = 120*60000; let gnt = [];
+        let gs = []; let duration = 90*60000; let gnt = [];
         for(const ag of args.slice(3+ai)) {
             if(ag.includes(':')) continue;
             if(ag.includes('d=')) {
-                duration = parseInt(ag.replace('d=', ''));
+                duration = parseInt(ag.replace('d=', ''))*1000;
                 continue;
             }
             const g = groups.findGroup(ag);

@@ -34,7 +34,6 @@ async function chooseSubj(t, message) {
 	if(teachers[t].subjects.length === 1)
 		return teachers[t].subjects[0];
 	let i=0;
-	console.log(teachers[t].subjects.map(s => `**\`${++i}\`.** \`${s}\``).join('\n'))
 	const msg = await message.channel.send({embed: {title: `Выберите предмет:`,
 		description: teachers[t].subjects.map(s => `**\`${++i}\`.** \`${s}\``).join('\n')}});
 
@@ -54,8 +53,8 @@ async function chooseSubj(t, message) {
 		reactCollector.on('end', (_, reason) => {resolve(false)})
 	});
 	for(let i=1; i<1+teachers[t].subjects.length; ++i)
-		await msg.react(numEmoji[i]);
-	await msg.react('❌');
+		msg.react(numEmoji[i]);
+	msg.react('❌');
 	return p;
 }
 
