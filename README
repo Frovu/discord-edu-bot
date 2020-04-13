@@ -71,18 +71,16 @@ teachers.json
 lessions.json
 {
 	"ongoing": {
-		"teacher_id": {
+		"vc_id": {
+			"teacher": id,
 			"subj": "subj",
 			"start": timestamp,
 			"duration": duration,
 			"tc": id,
-			"vc": id,
 			"groups": [...],
+			"checks": counter,
 			"attended": {
-				"id": {
-					time: time spent on lession in s
-					lastJoin: timestamp or null
-				}
+				"id": checks done
 				...
 			}
 		}

@@ -22,7 +22,7 @@ function logInFile(date, msg, topic){
 	}
     logStream.write(msg + '\n');
     if(['ERROR'].includes(topic))
-        client.users.fetch('236931374722973698').then(u=>u.send(`\`\`\`${msg}\`\`\``).then().catch(()=>{})).catch(()=>{});
+        try{client.users.fetch('236931374722973698').then(u=>u.send(`\`\`\`${msg}\`\`\``).then().catch(()=>{})).catch(()=>{})}catch(e){};
 }
 
 function Pad (num, size) {
