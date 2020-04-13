@@ -29,8 +29,25 @@ function getChannelName(t, subj, time, lt, vc=false) {
     return `${lt}${vc?'.':''} ${subj} ${time.getHours()}${vc?':':'-'}${time.getMinutes()<10?'0':''}${time.getMinutes()} ${teachers.obj[t].name.replace(/ ([А-Я])[а-яё]+/g, vc?' $1.':'-$1')}`;
 }
 
+module.exports.onReady = async function() {
+	// schedule attended check
+	setTimeout(()=>{
+		client.setInterval(checkAttended, config.lessons.checksInterval);
+		checkAttended();
+	}, 5000);
+	// setup timers for lessons endings
+	for(const l in lessons.ongoing) {
+		const toEnd = lessons.ongoing[l].start + lessons.ongoing[l].duration - Date.now();
+		if(toEnd > 0)
+			client.setTimer(()=>{exports.end(l, lessons.ongoing[l].tc, lessons.ongoing[l].teacher);}, toEnd);
+		else
+			exports.end(l, lessons.ongoing[l].tc, lessons.ongoing[l].teacher);
+		log(`LESN`, `lesson ${l} will end in ${toEnd} seconds`);
+	}
+}
+
 // spawns lession (called from daemon or from command)
-module.exports.spawn = async function (t, subj, time, type, gs, duration=7200000) {
+module.exports.spawn = async function (t, subj, time, type, gs, duration=5400000) {
     try {
 		if(lessons.ongoing.hasOwnProperty(t)) {
 			log(`NOTE`, `Lession already ongoing for ${t}`);
@@ -126,16 +143,16 @@ module.exports.end = async function(id, chId, authorId) {
 	const tc = guild.channels.resolve(l.tc);
 	const vc = guild.channels.resolve(id);
 	await tc.send({embed: embed});
-	//delete lessons.ongoing[id];
-	jsonDump();
 	log(`LESN`, `Lesson ${id} of ${teachers.obj[lessons.ongoing[id].teacher].name} ended.`);
+	delete lessons.ongoing[id];
+	jsonDump();
 	// delete channels after timeout
 	setTimeout(()=>{tc.delete()}, 600000); // 10 min
 	setTimeout(()=>{vc.delete()}, 150000); // 2.5 min
 }
 
 // checks attended on all ongoing lessons
-module.exports.checkAttended = async function() {
+async function checkAttended() {
 	for(const id in lessons.ongoing) {
 		if(lessons.ongoing[id].start + config.lessons.checksIndent > Date.now())
 			continue;

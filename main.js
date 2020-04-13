@@ -28,11 +28,7 @@ client.on("ready", function () {
 	log(`BOT`, `The bot is online!`);
 	// set presence
 	client.user.setActivity("distance learning", {type: "PLAYING"});
-	// lessons check
-	setTimeout(()=>{
-		client.setInterval(lessons.checkAttended, config.lessons.checksInterval);
-		lessons.checkAttended();
-	}, 5000);
+	lessons.onReady();
 });
 
 // Bot disconnection.
@@ -52,7 +48,6 @@ client.on("guildMemberAdd", async(member) => {
 
 // notify admin if sbdy joins empty tech support channel
 client.on("voiceStateUpdate", async (oldState, newState) => {
-	lessons.voiceChange(oldState, newState);
 	if(newState.channel && newState.channel.id === config.channels.support) {
 		if(newState.channel.members.array().find(m => m.roles.cache.has(config.roles.admin)))
 			return; // admin in channel
