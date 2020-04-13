@@ -17,6 +17,7 @@ try {
 	log(`ERROR`, `!!! Can't read ${jsonPath}. Count as empty.`)
 	var lessons = {ongoing:{}, scheduled:{}};
 }
+setInterval(()=>{log(`INFO`,`lessons.json was written ${wrc} times last hour`)}, 3600000)
 
 module.exports.obj = lessons;
 

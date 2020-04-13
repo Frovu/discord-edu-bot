@@ -25,7 +25,7 @@ module.exports = {
                 await message.channel.send({embed: {
                     title: `Teacher: \`${at.name}\``,
                     fields: [
-                        {name: 'User', value: `<@${args[1]}>`, inline: true},
+                        {name: 'User', value: `<@${at}>`, inline: true},
                         {name: 'Cathedra', value: `${at.cathedra}`, inline: true},
                         {name: 'Full name', value: `${at.name}`, inline: true},
                         {name: 'Channel', value: `<#${at.channel}>`, inline: true},
