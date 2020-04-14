@@ -1,7 +1,7 @@
 
 const lessons = require('./lessons.js');
-const groups = require('./lessons.js');
-const teachers = require('./lessons.js');
+const groups = require('./groups.js');
+const teachers = require('./teachers.js');
 const config = require('../json/config.json');
 const scheduled = lessons.obj.scheduled;
 
@@ -40,7 +40,6 @@ module.exports.daemon = async function() {
     for(const li in scheduled) {
         const l = scheduled[li];
         // spawn lesson
-        console.log()
         if(l.start.valueOf() - Date.now() < margin && !toBeSpawned.hasOwnProperty(l.teacher)) {
             toBeSpawned[l.teacher] = setTimeout(()=>{trySpawn(l, li)},  l.start.valueOf() - Date.now() - spawnMargin);
             log(`LESN`, `Lesson of ${teachers.obj[l.teacher].name} will spawn in ${(l.start.valueOf()-Date.now()-spawnMargin)/1000} sec.`);
@@ -72,5 +71,6 @@ module.exports.add = async function(teacher, repeat, subj, time, type, groups, d
     });
     lessons.jsonDump();
     log(`LESN`, `Lesson scheduled of ${teacher} for ${groups} at ${time.toISOString()}`);
+    exports.daemon(); // call daemon to check if new
     return true;
 }
