@@ -19,13 +19,14 @@ module.exports = {
                 return await message.reply(`Teacher not found.`);
         }
         if(!args[1] || !args[2]) { // print info
-            if(args[1]) var ts = [t];
-            else var ts = Object.values(teachers.obj)
-            for(const at of ts) {
+            if(args[1]) var ts = [args[1]];
+            else var ts = Object.keys(teachers.obj)
+            for(const atk of ts) {
+                const at = teachers.obj[atk]
                 await message.channel.send({embed: {
                     title: `Teacher: \`${at.name}\``,
                     fields: [
-                        {name: 'User', value: `<@${at}>`, inline: true},
+                        {name: 'User', value: `<@${atk}>`, inline: true},
                         {name: 'Cathedra', value: `${at.cathedra}`, inline: true},
                         {name: 'Full name', value: `${at.name}`, inline: true},
                         {name: 'Channel', value: `<#${at.channel}>`, inline: true},
