@@ -13,16 +13,21 @@ try {
 	// init dates
 	for(const l in lessons.ongoing)
 		lessons.ongoing[l].start = new Date(lessons.ongoing[l].start);
+	for(const l of lessons.scheduled)
+		l.start = new Date(l.start);
 } catch(e) {
-	log(`ERROR`, `!!! Can't read ${jsonPath}. Count as empty.`)
-	var lessons = {ongoing:{}, scheduled:{}};
+	log(`ERROR`, `!!! Can't read ${jsonPath}. Count as empty.`);
+	var lessons = {ongoing:{}, scheduled:[]};
 }
-setInterval(()=>{log(`INFO`,`lessons.json was written ${wrc} times last hour`)}, 3600000)
+setInterval(()=>{log(`INFO`,`lessons.json was written ${wrc} times last hour`); wrc=0;}, 3600000);
 
 module.exports.obj = lessons;
+const schedulem = require('./schedule.js');
+module.exports.schedule = schedulem.add;
 
 const jsonDump = () => fs.writeFileSync('./'+jsonPath, JSON.stringify(lessons, null, 2), 'utf8', (err) => {
-    if(err) log(`ERROR`, `Failed writing ${jsonPath}`); wrc++;
+    if(err) log(`ERROR`, `Failed writing ${jsonPath}`);
+	wrc++;
 });
 module.exports.jsonDump = jsonDump;
 
@@ -31,6 +36,9 @@ function getChannelName(t, subj, time, lt, vc=false) {
 }
 
 module.exports.onReady = async function() {
+	// spawn schedule daemon
+	client.setInterval(schedulem.daemon, config.lessons.daemonInterval);
+	schedulem.daemon;
 	// schedule attended check
 	setTimeout(()=>{
 		client.setInterval(checkAttended, config.lessons.checksInterval);
@@ -102,7 +110,7 @@ module.exports.spawn = async function (t, subj, time, type, gs, duration=5400000
 		}
 		jsonDump();
 		client.setTimeout(()=>{exports.end(vc.id, tc.id, t);}, time.valueOf()+duration-Date.now());
-		log(`NOTE`, `Lession spawned t:${t},gs:${gs} ${time.toISOString().replace(/\..+/, '')} ends in ${time.valueOf()+duration-Date.now()/1000} sec`);
+		log(`NOTE`, `Lession spawned t:${t},gs:${gs} ${time.toISOString().replace(/\..+/, '')} ends in ${(time.valueOf()+duration-Date.now())/1000} sec`);
 		return true;
     } catch(e) {
         log(`ERROR`, `!!! Failed to spawn lession of ${teachers.obj[t].name} for ${gs}:\n${e.stack}`);

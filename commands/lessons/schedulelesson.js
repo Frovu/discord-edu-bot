@@ -5,8 +5,8 @@ const teachers = require('../../functions/teachers.js');
 const config = require('../../json/config.json');
 const confirm = require('../../functions/reactConfirm.js');
 
-// if used as standalone command(admin): .schedule teacher_id type repeat_type time date groups
-// if used from wrappers (by teacher) (.лк .пр): .лк repeat_type time date groups
+// if used as standalone command(admin): .schedule teacher_id type repeat_type date time groups
+// if used from wrappers (by teacher) (.лк .пр): .лк repeat_type date time groups
 module.exports = {
     aliases: ["schedule", "задать"],
     exec: async function(message, at, atype) {
@@ -23,17 +23,22 @@ module.exports = {
         let ai = at ? 0 : 2; // args number increment
         const rpt = args[1+ai];
         if(rpt !== 'now') {
-            var date = new Date(args[3+ai]);
-            if(isNaN(date))
+            var date = new Date(args[2+ai]);
+            if(isNaN(date)) {
                 date = new Date();
-            date.setHours(0,0,0,0);
-            // parse time
-            if(!args[2+ai])
-                return await message.reply(`Укажите время.`);
-            if(!args[2+ai].match(/^[0-9]{1,2}:[0-9]{2}$/))
-                return await message.reply(`Укажите время в формате \`99:99\`.`);
-            const time = args[2+ai].split(':');
-            date.setHours(time[0],time[1],0,0);
+                date.setHours(0,0,0,0);
+                ai-=1;
+            }
+            if(!date.getHours()) {
+                // parse time
+                if(!args[3+ai])
+                    return await message.reply(`Укажите время.`);
+                if(!args[3+ai].match(/^[0-9]{1,2}:[0-9]{2}$/))
+                    return await message.reply(`Укажите время в формате \`99:99\`.`);
+                const time = args[3+ai].split(':');
+                date.setHours(time[0],time[1],0,0);
+            }
+
         } else {
             ai-=1;
             var date = new Date(Date.now()+80000); // +80sec
@@ -75,10 +80,10 @@ module.exports = {
 
         if(rpt === 'now') {
             if(!(await lessons.spawn(t, subj, date, type, gs, duration)))
-                return await message.reply(`Невозможно создать пару`);
+                return await message.reply(`Невозможно создать пару.`);
         } else if(['once', 'weekly', 'biweekly'].includes(rpt)) {
-            if(!(await lessons.schedule())) // TODO ARGS
-                return await message.reply(`Невозможно создать пару`);
+            if(!(await lessons.schedule(t, rpt, subj, date, type, gs, duration)))
+                return await message.reply(`Невозможно создать пару, возможно подобная пара уже стоит в расписании.`);
         } else {
             return await message.reply(`Неизвестный тип повторения: \`${rpt}\``);
         }

@@ -88,9 +88,8 @@ lessions.json
 	"scheduled": [
 		{
 			"subj": "subj",
-			"time": timestamp,
-			"weekday": for weekly,
-			"weekeven": for biweekly,
+			"start": timestamp,
+			"duration": duratoin,
 			"type": "lecture",
 			"repeat": "once/weekly/biweekly",
 			"teacher": "id",
