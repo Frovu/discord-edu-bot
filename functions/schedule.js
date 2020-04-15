@@ -18,11 +18,11 @@ async function trySpawn(l, li) {
     const st = await lessons.spawn(l.teacher, l.subj, l.start, l.type, l.groups, l.duration);
     if(st) {
         // spawned successfuly, update schedule
-        if(l.repeat = 'once')
+        if(l.repeat === 'once')
             scheduled.splice(li, 1); // rm from schedule
-        else if(l.repeat = 'weekly')
+        else if(l.repeat === 'weekly')
             l.start = new Date(l.start.valueOf()+weekVal);
-        else if(l.repeat = 'weekly')
+        else if(l.repeat === 'weekly')
             l.start = new Date(l.start.valueOf()+weekVal*2);
         else
             log(`ERROR`, `Unknown repeat_type: ${l.repeat}`);
