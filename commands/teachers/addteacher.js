@@ -13,8 +13,8 @@ module.exports = {
         if(!target)
             return await message.reply(`Target not found: \`${args[1]}\``);
         const name = args.slice(3).join(' ');
-        if(teachers.obj.hasOwnProperty(target.id) || teachers.find(name))
-            return await message.reply(`Already registered.`);
+        if(!args[3] || teachers.obj.hasOwnProperty(target.id) || teachers.find(name))
+            return await message.reply(`Already registered / input name.`);
         const cathedra = args[2].toUpperCase();
 
         const chname = `${cathedra}-${name.replace(/ ([А-Я])[а-яё]+/g, "-$1")}`

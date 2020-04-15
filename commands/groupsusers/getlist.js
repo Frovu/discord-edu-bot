@@ -7,7 +7,7 @@ module.exports = {
     aliases: ["getlist", "list", "список"],
     exec: async function(message) {
         const args = message.content.split(/\n| +/g);
-        const g = groups.findGroup(args[1]);
+        const g = args[1]?groups.findGroup(args[1]):undefined;
         if(!g)
             return await message.reply(`Группа не найдена: \`${args[1]}\``); // not found
         // check if admin or group elder
