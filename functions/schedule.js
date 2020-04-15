@@ -46,7 +46,7 @@ module.exports.daemon = async function() {
             // notify groups and teacher
             let ch = client.guilds.resolve(config.guild).channels.resolve(teachers.obj[l.teacher].channel);
             await ch.send(`Ваша пара **${l.subj}**(${l.type}) для групп(ы) ${l.groups.map(g => g.toUpperCase()).join(', ')} начнется через ${((l.start.valueOf() - Date.now())/60000).toFixed(1)} минут.`);
-            for(const ag in l.groups) {
+            for(const ag of l.groups) {
                 ch = client.guilds.resolve(config.guild).channels.resolve(groups.obj[ag].channel);
                 await ch.send(`Ваша пара **${l.subj}**(${l.type}) с преподавателем \`${teachers.obj[l.teacher].name}\` начнется через ${((l.start.valueOf() - Date.now())/60000).toFixed(1)} минут.`);
             }
