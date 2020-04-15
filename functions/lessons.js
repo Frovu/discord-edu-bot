@@ -164,7 +164,7 @@ module.exports.end = async function(id, chId, authorId) {
 // checks attended on all ongoing lessons
 async function checkAttended() {
 	for(const id in lessons.ongoing) {
-		if(lessons.ongoing[id].start + config.lessons.checksIndent > Date.now())
+		if(Date.now() < lessons.ongoing[id].start.valueOf() + config.lessons.checksIndent)
 			continue;
 		const vc = client.guilds.resolve(config.guild).channels.resolve(id);
 		if(!vc) {
