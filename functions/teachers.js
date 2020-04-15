@@ -21,7 +21,8 @@ const jsonDump = () => fs.writeFileSync('./'+jsonPath, JSON.stringify(teachers, 
 module.exports.jsonDump = jsonDump;
 
 function find(namePart) {
-    const found = Object.keys(teachers).filter(t => teachers[t].name.startsWith(namePart));
+	console.log(teachers)
+    const found = Object.keys(teachers).filter(t => t===namePart || teachers[t].name.startsWith(namePart));
     if(found.length === 1)
         return found[0];
     return false;
