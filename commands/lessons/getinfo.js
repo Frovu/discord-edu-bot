@@ -6,7 +6,7 @@ const config = require('../../json/config.json');
 
 module.exports = {
     aliases: ["linfo", "инфо"],
-    exec: async function(message, at, atype) {
+    exec: async function(message) {
         const args = message.content.split(/\n| +/g);
         if(!message.member.roles.cache.has(config.roles.admin))
             return;

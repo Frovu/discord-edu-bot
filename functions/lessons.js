@@ -25,10 +25,12 @@ module.exports.obj = lessons;
 const schedulem = require('./schedule.js');
 module.exports.schedule = schedulem.add;
 
-const jsonDump = () => fs.writeFileSync('./'+jsonPath, JSON.stringify(lessons, null, 2), 'utf8', (err) => {
-    if(err) log(`ERROR`, `Failed writing ${jsonPath}`);
-	wrc++;
-});
+function jsonDump() {
+	fs.writeFileSync('./'+jsonPath, JSON.stringify(lessons, null, 2), 'utf8', (err) => {
+	    if(err) log(`ERROR`, `Failed writing ${jsonPath}`);
+		wrc++;
+	});
+}
 module.exports.jsonDump = jsonDump;
 
 function getChannelName(t, subj, time, lt, vc=false) {
@@ -84,7 +86,7 @@ module.exports.spawn = async function (t, subj, time, type, gs, duration=5400000
             permissionOverwrites: ows
         });
         // send info messages
-        const embed = { title: `Пара: **${subj}** (**${type}**)`,
+        const embed = { title: `Пара скоро начнется: **${subj}** (**${type}**)`,
             fields: [
                 {name: 'Преподаватель', value: teachers.obj[t].name, inline: true},
                 {name: 'Группы', value: gs.map(g => g.toUpperCase()).join(', '), inline: true},
