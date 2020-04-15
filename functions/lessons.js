@@ -38,7 +38,7 @@ function getChannelName(t, subj, time, lt, vc=false) {
 module.exports.onReady = async function() {
 	// spawn schedule daemon
 	client.setInterval(schedulem.daemon, config.lessons.daemonInterval);
-	schedulem.daemon;
+	schedulem.daemon();
 	// schedule attended check
 	setTimeout(()=>{
 		client.setInterval(checkAttended, config.lessons.checksInterval);
