@@ -146,8 +146,6 @@ module.exports.end = async function(id, chId, authorId) {
 			const m = Object.keys(groups.obj[g].members).find(k => groups.obj[g].members[k] === a);
 			if(m)
 				embed.description += `\`${++i}\`. ${m.replace(/\+/g, '')}\t-\t**${(l.attended[a]/l.checks*100).toFixed(1)}%**\n`;
-			else
-				log(`ERROR`, `on lesson end ${a} not found in ${g}`);
 		}
 	}
 	// send this message to lesson and teachers channels
