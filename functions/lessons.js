@@ -173,7 +173,7 @@ async function checkAttended() {
 			log(`ERROR`, `Failed to resolve vc for lesson atdcheck ${id} of ${teachers.obj[lessons.ongoing[id].teacher].name}`);
 			continue;
 		}
-		if(vc.members.has(lessons.ongoing[id].teacher)) {
+		if(!vc.members.has(lessons.ongoing[id].teacher)) {
 			log(`ATCHK`, `No teacher on lesson ${id} (${teachers.obj[lessons.ongoing[id].teacher].name})`);
 			continue;
 		}
