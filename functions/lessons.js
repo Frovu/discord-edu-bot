@@ -70,6 +70,7 @@ module.exports.spawn = async function (t, subj, time, type, gs, duration=5400000
         // create channels
         let ows = [ {id: t, allow: 'VIEW_CHANNEL', type: 'member'},
             {id: guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'},
+	        {id: config.roles.elder, allow: ['MANAGE_MESSAGES','MUTE_MEMBERS'], type: 'role'},
 			{id: config.roles.moderator, allow: 'VIEW_CHANNEL', type: 'role'}
         ].concat(gs.map(g => {return {id: groups.obj[g].role, allow: 'VIEW_CHANNEL', type: 'role'};}));
         const tc = await guild.channels.create(getChannelName(t, subj, time, type), {
@@ -78,7 +79,7 @@ module.exports.spawn = async function (t, subj, time, type, gs, duration=5400000
             permissionOverwrites: ows
         });
 		if(type === 'лк') // students cant speak on lecture
-			ows.push({id: config.roles.student, deny: 'SPEAK', type: 'role'})
+			ows.push({id: config.roles.student, deny: ['SPEAK','STREAM'], type: 'role'})
         const vc = await guild.channels.create(getChannelName(t, subj, time, type, true), {
 			parent: config.channels.lessons,
             type: 'voice',
@@ -135,17 +136,22 @@ module.exports.end = async function(id, chId, authorId) {
 			{name: 'Преподаватель', value: teachers.obj[l.teacher].name, inline: true},
 			{name: 'Группы', value: l.groups.map(g => g.toUpperCase()).join(', '), inline: true},
 			{name: 'Время начала', value: l.start.toString().replace(/:.. .+/, ''), inline: true},
-			{name: 'Продолжительность', value: `${Math.floor((Date.now()-l.start)/60000)} минут`, inline: true}
+			{name: 'Продолжительность', value: `${Math.floor((Date.now()-l.start)/60000)} минут`, inline: true},
+			{name: 'Всего посетивших', value: Object.keys(l.attended).length, inline: true}
 		],
 		footer: teachers.obj[l.teacher].cathedra
 	}
 	for(const g of l.groups) {
-		embed.description += `**\`${g.toUpperCase()}\`:**\n`;
-		let i=0;
-		for(const a in l.attended) {
-			const m = Object.keys(groups.obj[g].members).find(k => groups.obj[g].members[k] === a);
-			if(m)
-				embed.description += `\`${++i}\`. ${m.replace(/\+/g, '')}\t-\t**${(l.attended[a]/l.checks*100).toFixed(1)}%**\n`;
+		let text = ''; let atd = 0;
+		const mems = Object.keys(groups.obj[g].members);
+		for(const m of Object.keys(l.attended).sort()) {
+			const gn = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a] === m);
+			if(!gn) continue;
+			if(l.attended[m] > l.checks/3) {
+				text += `\`(${(l.attended[m]/l.checks*100).toFixed(1)-0.1}%)\` \t\`${mems.indexOf(gn)+1}\`. ${gn.replace(/\+/g, '')}\n`;
+				atd++;
+			}
+			embed.description += `**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`;
 		}
 	}
 	// send this message to lesson and teachers channels
