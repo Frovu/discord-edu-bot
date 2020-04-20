@@ -144,15 +144,14 @@ module.exports.end = async function(id, chId, authorId) {
 	for(const g of l.groups) {
 		let text = ''; let atd = 0;
 		const mems = Object.keys(groups.obj[g].members);
-		for(const m of Object.keys(l.attended).sort()) {
-			const gn = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a] === m);
-			if(!gn) continue;
-			if(l.attended[m] > l.checks/3) {
-				text += `\`(${(l.attended[m]/l.checks*100).toFixed(1)-0.1}%)\` \t\`${mems.indexOf(gn)+1}\`. ${gn.replace(/\+/g, '')}\n`;
+		for(const m of mems.sort()) {
+			const id = groups.obj[g].members[m];
+			if(l.attended[id] > l.checks/3) {
+				text += `\`(${((l.attended[id]/l.checks*100)-0.1).toFixed(1)}%)\` \t\`${mems.indexOf(m)+1}\`. ${m.replace(/\+/g, '')}\n`;
 				atd++;
 			}
-			embed.description += `**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`;
 		}
+		embed.description += `**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`;
 	}
 	// send this message to lesson and teachers channels
 	await guild.channels.resolve(teachers.obj[l.teacher].channel).send({embed: embed});
