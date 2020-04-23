@@ -1,4 +1,4 @@
-const lessons = require('../../functions/teachers.js');
+const lessons = require('../../functions/lessons.js');
 const config = require('../../json/config.json');
 
 module.exports = {
