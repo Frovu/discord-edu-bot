@@ -17,7 +17,7 @@ module.exports = {
             return await message.channel.send(`Available options: \`enable/disable\``);
         }
         lessons.jsonDump();
-        log(`NOTE`, `${message.author.user.tag} set regEnable to ${lessons.obj.regEnable}`);
+        log(`NOTE`, `${message.author.tag} set regEnable to ${lessons.obj.regEnable}`);
         await message.channel.send(`set Regestration enabled = \`${lessons.obj.regEnable}\``);
     }
 }
