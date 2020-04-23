@@ -56,7 +56,7 @@ module.exports.findGroup = findGroup;
 const lessons = require('./lessons.js')
 
 module.exports.onMessage = async function(message) {
-	if(!lessons.regEnable) return;
+	if(!lessons.obj.regEnable) return;
 	if(message.channel.id !== config.channels.entry)
 		return;
 	// ignore admins / mods / elders
