@@ -1,4 +1,5 @@
 const lessons = require('../../functions/teachers.js');
+const config = require('../../json/config.json');
 
 module.exports = {
     aliases: ["reg"],
