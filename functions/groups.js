@@ -52,7 +52,11 @@ module.exports.getNick = getNick;
 module.exports.find = find;
 module.exports.findGroup = findGroup;
 
+// im very sorry for this.. but bruh, why not
+const lessons = require('./lessons.js')
+
 module.exports.onMessage = async function(message) {
+	if(!lessons.regEnable) return;
 	if(message.channel.id !== config.channels.entry)
 		return;
 	// ignore admins / mods / elders
