@@ -14,7 +14,7 @@ module.exports = {
         // parse list
         let list = '';
         for(const g of l.groups) {
-            list += `**\`${g.toUpperCase()}\`:**\n`;
+            list += ;
             let i=0;
             for(const m of Object.keys(l.attended).sort()) {
                 const name = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a] === m);
@@ -22,12 +22,12 @@ module.exports = {
                     list += `\`${++i}\`. ${name.replace(/\+/g, '')}\n`;
                 }
             }
+            await message.channel.send({embed: {
+                    title: `Список студентов на паре ${l.subj} (${l.type}):`,
+                    description: `**\`${g.toUpperCase()}\`:**\n${list}`,
+                    color: message.member.displayColor
+                }
+            });
         }
-        await message.channel.send({embed: {
-                title: `Список студентов на паре ${l.subj} (${l.type}):`,
-                description: list,
-                color: message.member.displayColor
-            }
-        });
     }
 }

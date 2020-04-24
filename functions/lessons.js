@@ -141,6 +141,10 @@ module.exports.end = async function(id, chId, authorId) {
 		],
 		footer: teachers.obj[l.teacher].cathedra
 	}
+	const teachc = guild.channels.resolve(teachers.obj[l.teacher].channel);
+	const tc = guild.channels.resolve(l.tc);
+	const vc = guild.channels.resolve(id);
+	log(`LESNDUMP`, JSON.stringify(l, null, 4));
 	for(const g of l.groups) {
 		let text = ''; let atd = 0;
 		const mems = Object.keys(groups.obj[g].members);
@@ -151,13 +155,11 @@ module.exports.end = async function(id, chId, authorId) {
 				atd++;
 			}
 		}
-		embed.description += `**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`;
+		embed.description = `**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`;
+		// send this message to lesson and teachers channels
+		await teachc.send({embed: embed});
+		await tc.send({embed: embed});
 	}
-	// send this message to lesson and teachers channels
-	await guild.channels.resolve(teachers.obj[l.teacher].channel).send({embed: embed});
-	const tc = guild.channels.resolve(l.tc);
-	const vc = guild.channels.resolve(id);
-	await tc.send({embed: embed});
 	log(`LESN`, `Lesson ${id} of ${teachers.obj[lessons.ongoing[id].teacher].name} ended.`);
 	delete lessons.ongoing[id];
 	jsonDump();

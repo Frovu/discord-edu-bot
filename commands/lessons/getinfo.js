@@ -34,15 +34,16 @@ module.exports = {
             if(!embed.description && Object.keys(l.groups).length > 0)
                 embed.description = '';
             for(const g of l.groups) {
-                embed.description += `**\`${g.toUpperCase()}\`:**\n`;
+                let txt = '';
                 let i=0;
                 for(const a in l.attended) {
                     const m = Object.keys(groups.obj[g].members).find(k => groups.obj[g].members[k] === a);
                     if(m)
-                        embed.description += `\`${++i}\`. ${m.replace(/\+/g, '')}\t${l.attended[a]}/${l.checks} (**${(l.attended[a]/l.checks*100).toFixed(1)}%**)\n`;
+                        txt += `\`${++i}\`. ${m.replace(/\+/g, '')}\t${l.attended[a]}/${l.checks} (**${(l.attended[a]/l.checks*100).toFixed(1)}%**)\n`;
                 }
+                embed.description += `**\`${g.toUpperCase()}\`:**\n`;
+                await message.channel.send({embed:embed});
             }
-            await message.channel.send({embed:embed});
         }
     }
 }
