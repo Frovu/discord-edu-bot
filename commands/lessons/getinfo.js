@@ -41,7 +41,7 @@ module.exports = {
                     if(m)
                         txt += `\`${++i}\`. ${m.replace(/\+/g, '')}\t${l.attended[a]}/${l.checks} (**${(l.attended[a]/l.checks*100).toFixed(1)}%**)\n`;
                 }
-                embed.description += `**\`${g.toUpperCase()}\`:**\n`;
+                embed.description = `**\`${g.toUpperCase()}\`:**\n${txt}`;
                 await message.channel.send({embed:embed});
             }
         }
