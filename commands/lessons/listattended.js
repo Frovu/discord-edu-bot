@@ -12,9 +12,8 @@ module.exports = {
         if(!l)
             return await message.reply(`Пара не найдена.`);
         // parse list
-        let list = '';
         for(const g of l.groups) {
-            list += ;
+            let list = '';
             let i=0;
             for(const m of Object.keys(l.attended).sort()) {
                 const name = Object.keys(groups.obj[g].members).find(a => groups.obj[g].members[a] === m);
