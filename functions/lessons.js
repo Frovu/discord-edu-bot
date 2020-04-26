@@ -155,11 +155,16 @@ module.exports.end = async function(id, chId, authorId) {
 				atd++;
 			}
 		}
-		embed.description = `**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`;
+		if((embed.description+`**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`).length > 2400) {
+			await teachc.send({embed: embed});
+			await tc.send({embed: embed});
+			embed.description = '';
+		}
+		embed.description += `**\`${g.toUpperCase()}\`:** (всего - ${atd})\n${text}`;
 		// send this message to lesson and teachers channels
-		await teachc.send({embed: embed});
-		await tc.send({embed: embed});
 	}
+	await teachc.send({embed: embed});
+	await tc.send({embed: embed});
 	log(`LESN`, `Lesson ${id} of ${teachers.obj[lessons.ongoing[id].teacher].name} ended.`);
 	delete lessons.ongoing[id];
 	jsonDump();
