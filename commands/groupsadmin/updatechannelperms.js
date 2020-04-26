@@ -12,7 +12,7 @@ module.exports = {
     exec: async function(message) {
         if(!message.member.roles.cache.has(config.roles.admin))
             return
-        let nf = [];
+        let nf = [], toUpdate = [], toUpdateShow = '';
         for(const c of message.guild.channels.cache.array()) {
             if(!c.name.match(/....-..-../))
                 continue;
@@ -42,11 +42,17 @@ module.exports = {
             }
             if(!ok) {
                 // actually update after confirm
-                if(!(await confirm(message.channel, message.author.id, `Update overwrites for \`${c.name}\` (${c.type})?`)))
-                    return;
-                await c.overwritePermissions(ows);
+                //if(!(await confirm(message.channel, message.author.id, `Update overwrites for \`${c.name}\` (${c.type})?`)))
+                //    return;
+                //await c.overwritePermissions(ows);
+                toUpdateShow+=`${c.name} (${c.type})\n`;
+                toUpdate.push({c: c, ow: ows});
             }
         }
         await message.channel.send(`WARN unregistered: \`${nf.join(' ')}\``);
+        if(!(await confirm(message.channel, message.author.id, `Update overwrites for channels:\n\`\`\`\n${toUpdateShow}\`\`\``)))
+            return;
+        for(const p of toUpdate)
+            await p.c.overwritePermissions(p.ow);
     }
 }
