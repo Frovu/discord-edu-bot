@@ -42,7 +42,6 @@ module.exports = {
             }})
             var tc = await message.guild.channels.create(name, {
                 permissionOverwrites: [
-                    {id: config.roles.moderator, allow: 'VIEW_CHANNEL', type: 'role'},
                     {id: config.roles.elder, allow: 'MANAGE_MESSAGES', type: 'role'},
                     {id: role.id, allow: 'VIEW_CHANNEL', type: 'role'},
                     {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'}
@@ -51,7 +50,6 @@ module.exports = {
             var vc = await message.guild.channels.create(name.toUpperCase(), {
                 type: 'voice',
                 permissionOverwrites: [
-                    {id: config.roles.moderator, allow: ['VIEW_CHANNEL'], type: 'role'},
                     {id: config.roles.elder, allow: 'MUTE_MEMBERS', type: 'role'},
                     {id: role.id, allow: 'VIEW_CHANNEL', type: 'role'},
                     {id: message.guild.roles.everyone, deny: 'VIEW_CHANNEL', type: 'role'}

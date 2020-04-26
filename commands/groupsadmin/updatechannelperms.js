@@ -22,10 +22,11 @@ module.exports = {
                     nf.push(g)
                 continue;
             }
-            const ows = [{id: config.roles.moderator, allow: 'VIEW_CHANNEL', type: 'role'},
-                {id: config.roles.elder, allow: c.type==='text'?'MANAGE_MESSAGES':'MUTE_MEMBERS', type: 'role'},
+            const ows = [
+                {id: config.roles.elder, allow: ['MANAGE_MESSAGES','MUTE_MEMBERS'], type: 'role'},
                 {id: groups.obj[g].role, allow: 'VIEW_CHANNEL', type: 'role'},
-                {id: message.guild.roles.everyone.id, deny: 'VIEW_CHANNEL', type: 'role'}];
+                {id: message.guild.roles.everyone.id, deny: 'VIEW_CHANNEL', type: 'role'}
+            ];
             let ok = true;
             for(const ow of c.permissionOverwrites.array()) {
                 //console.log('a '+ow.id)
@@ -41,7 +42,7 @@ module.exports = {
             }
             if(!ok) {
                 // actually update after confirm
-                if(!(await confirm(message.channel, message.author.id, `Update overwrites for ${c.name}(${c.type})?`)))
+                if(!(await confirm(message.channel, message.author.id, `Update overwrites for \`${c.name}\` (${c.type})?`)))
                     return;
                 await c.overwritePermissions(ows);
             }
