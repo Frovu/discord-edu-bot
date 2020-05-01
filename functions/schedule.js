@@ -50,7 +50,12 @@ module.exports.daemon = async function() {
     for(const li in scheduled) {
         const l = scheduled[li];
         // spawn lesson
-        if(l.start.valueOf() - Date.now() < margin && !toBeSpawned.hasOwnProperty(l.teacher)) {
+        if(!toBeSpawned.hasOwnProperty(l.teacher) && l.start.valueOf() - Date.now() < margin) {
+            // skip lesson if 20 min passed from its scheduled start
+            if(Date.now() - l.start.valueOf() > margin) {
+                exports.skip(li);
+                return log(`LESN`, `overdued lesson of t${l.teacher} skipped`);
+            }
             toBeSpawned[l.teacher] = setTimeout(()=>{trySpawn(li)},  l.start.valueOf() - Date.now() - spawnMargin);
             log(`LESN`, `Lesson of ${teachers.obj[l.teacher].name} will spawn in ${(l.start.valueOf()-Date.now()-spawnMargin)/1000} sec.`);
             // notify groups and teacher
