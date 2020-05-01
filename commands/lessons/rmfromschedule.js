@@ -15,7 +15,7 @@ module.exports = {
         let msg = ''; let i=0;
         for(const l of lessons.obj.scheduled) {
             if(!args[1] || (l.teacher == args[1]))
-                msg+=`*${i}* ${l.subj}.${l.type}\t${l.start.toISOString()}\n\t\t${teachers.obj[l.teacher].name}(${l.teacher}) \t${l.groups.join(', ')}\n`;
+                msg+=`${i}. ${l.subj} ${l.type}\t${l.start.toISOString().replace(/\..+/,'')} \t${args[1]?'':teachers.obj[l.teacher].name+'('+l.teacher+')'} \t${l.groups.join(', ')}\n`;
             i++;
         }
         await message.channel.send(`**Select lesson to remove:**\`\`\`\n${msg}\`\`\``, {split:{append:'```', prepend: '```'}});
