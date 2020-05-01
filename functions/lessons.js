@@ -24,6 +24,7 @@ setInterval(()=>{log(`INFO`,`lessons.json was written ${wrc} times last hour`); 
 module.exports.obj = lessons;
 const schedulem = require('./schedule.js');
 module.exports.schedule = schedulem.add;
+module.exports.skip = schedulem.skip;
 
 function jsonDump() {
 	fs.writeFileSync('./'+jsonPath, JSON.stringify(lessons, null, 2), 'utf8', (err) => {

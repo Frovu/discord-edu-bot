@@ -48,7 +48,8 @@ module.exports = {
                     lastwd = l.start.getDay();
                     embed.description += `**${getDay(l.start)}:**\n`;
                 }
-                embed.description += `${l.start.toString().match(/ (..:..)/)[1]} - **${l.subj}**(${l.type}): ${getAppend(l)}\n`;
+                const dstr = l.start.toString();
+                embed.description += `${dstr.match(/ (..:..)/)[1]} (${dstr.match(/(... \d{2})/)[1]}) - **${l.subj}**(${l.type}): ${getAppend(l)}\n`;
                 i++;
             }
         }
@@ -57,15 +58,3 @@ module.exports = {
         return await message.channel.send({embed:embed});
     }
 }
-/*{
-    title: `**${l.subj} (${l.type})**`,
-    fields: [
-        {name: 'Преподаватель', value: teachers.obj[l.teacher].name, inline: true},
-        {name: 'Группы', value: l.groups.map(g => g.toUpperCase()).join(', '), inline: true},
-        {name: 'Время начала', value: l.start.toString().replace(/:.. .+/, ''), inline: true},
-        {name: 'Начнется через', value: `${Math.floor((l.start-Date.now())/60000)} минут`, inline: true},
-        {name: 'Продолжительность', value: `${Math.floor(l.duration/60000)} минут`, inline: true},
-        {name: 'Повторение', value: `${['now', 'once'].includes(l.repeat)?'один раз':(l.repeat==='weekly'?'еженедельно':(l.repeat==='biweekly'?'каждые две недели':'???'))}`, inline: true}
-    ],
-    footer: teachers.obj[l.teacher].cathedra
-}*/
