@@ -9,11 +9,16 @@ module.exports = {
     exec: async function(message) {
         if(!message.member.roles.cache.has(config.roles.admin))
             return;
+        const args = message.content.split(/\n| +/g);
+        if(args[1] && !teachers.obj.hasOwnProperty(args[1]))
+            return await message.reply(`Укажите id существующего преподавателя.`);
         let msg = ''; let i=0;
         for(const l of lessons.obj.scheduled) {
-            msg+=`*${i++}* ${l.subj}.${l.type}\t${l.start.toISOString()}\n\t\t${teachers.obj[l.teacher].name}(${l.teacher}) \t${l.groups.join(', ')}\n`;
+            if(!args[1] || (l.teacher == args[1]))
+                msg+=`*${i}* ${l.subj}.${l.type}\t${l.start.toISOString()}\n\t\t${teachers.obj[l.teacher].name}(${l.teacher}) \t${l.groups.join(', ')}\n`;
+            i++;
         }
-        await message.channel.send(`**Select lesson to remove:**\`\`\`\n${msg}\`\`\``);
+        await message.channel.send(`**Select lesson to remove:**\`\`\`\n${msg}\`\`\``, {split:{append:'```', prepend: '```'}});
         const collector = message.channel.createMessageCollector(m => m.author.id === message.author.id, {time: 120000});
         collector.on('collect', async m => {
             const n = parseInt(m.content);
