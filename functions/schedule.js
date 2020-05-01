@@ -27,8 +27,10 @@ module.exports.skip = function(li, remove=false) {
         log(`ERROR`, `Unknown repeat_type: ${l.repeat}`);
         return false;
     }
-    if(toBeSpawned.hasOwnProperty(l.teacher))
+    if(toBeSpawned.hasOwnProperty(l.teacher)) {
+        clearTimeout(toBeSpawned[l.teacher]);
         delete toBeSpawned[l.teacher];
+    }
     lessons.jsonDump();
     return true;
 }
