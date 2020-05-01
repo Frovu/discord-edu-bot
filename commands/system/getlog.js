@@ -22,17 +22,17 @@ module.exports = {
         const logFiles = fs.readdirSync('./logs');
         if(!args[2]) {
             await lastLog(logFiles, message.author);
-        } else switch(args[1]) {
+        } else switch(args[2]) {
             case 'list':
                 let text = `\`\`\`\n${logFiles.join('\n')}\`\`\``;
                 return await message.author.send(text, {split: {prepend:'```', append:'```'}});
             default:
                 if(!logFiles.includes(args[2]))
-                    return await message.reply(`\\> No subcommand named \`\`${args[1]}\`\``);
+                    return await message.reply(`\\> No subcommand named \`\`${args[2]}\`\``);
                 await message.author.send(`\\> Requiring logging data...`, {
                   files: [{
-                    attachment: `${process.cwd()}/logs/${args[1]}`,
-                    name: args[1]
+                    attachment: `${process.cwd()}/logs/${args[2]}`,
+                    name: args[2]
                   }]
                 });
         }
