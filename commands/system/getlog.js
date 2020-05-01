@@ -19,7 +19,15 @@ module.exports = {
         if(message.author.id !== '236931374722973698')
             return;
         const args = message.content.split(/\n| +/g);
-        const logFiles = fs.readdirSync('./logs');
+        const logFiles = fs.readdirSync('./logs').map(fileName=>{
+        return {
+            name: fileName,
+            time: fs.statSync('./logs/' + fileName).mtime.getTime()};
+        }).sort(function (a, b) {
+            return a.time - b.time;
+        }).map(function (v) {
+            return v.name;
+        });
         if(!args[1]) {
             await lastLog(logFiles, message.author);
         } else switch(args[1]) {
