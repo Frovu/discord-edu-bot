@@ -19,9 +19,10 @@ module.exports = {
         if(args[2]==='today') {
             if('skip' !== args[1])
                 return await message.reply(`\`today\` only works with \`skip\``);
-            let toSkip = []; let confText = '';
+            let toSkip = []; let confText = ''; const now = new Date();
             for(const li in lessons.obj.scheduled) {
                 const l = lessons.obj.scheduled[li];
+                if(now.toDateString() !== l.start.toDateString()) continue; // not today
                 confText += `${l.subj} ${l.type}\t${l.start.toISOString().replace(/\..+/,'')} ${teachers.obj[l.teacher].name+'('+l.teacher+')'} ${l.groups.join(', ')}\n`;
                 toSkip.push(li);
             }
