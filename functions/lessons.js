@@ -19,7 +19,7 @@ try {
 	log(`ERROR`, `!!! Can't read ${jsonPath}. Count as empty.`);
 	var lessons = {ongoing:{}, scheduled:[]};
 }
-setInterval(()=>{log(`INFO`,`lessons.json was written ${wrc} times last hour`); wrc=0;}, 3600000);
+setInterval(()=>{log(`INFO`,`lessons.json was written ${wrc} times last 3 hours`); wrc=0;}, 10800000);
 
 module.exports.obj = lessons;
 const schedulem = require('./schedule.js');
@@ -27,7 +27,7 @@ module.exports.schedule = schedulem.add;
 module.exports.skip = schedulem.skip;
 
 function jsonDump() {
-	fs.writeFileSync('./'+jsonPath, JSON.stringify(lessons, null, 2), 'utf8', (err) => {
+	fs.writeFile('./'+jsonPath, JSON.stringify(lessons, null, 2), 'utf8', (err) => {
 	    if(err) log(`ERROR`, `Failed writing ${jsonPath}`);
 		wrc++;
 	});
