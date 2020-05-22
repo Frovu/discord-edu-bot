@@ -123,12 +123,12 @@ module.exports.spawn = async function (t, subj, time, type, gs, duration=5400000
 };
 
 // end lesson after confirmation
-module.exports.end = async function(id, chId, authorId) {
+module.exports.end = async function(id, chId, authorId, forced=false) {
 	if(!lessons.ongoing.hasOwnProperty(id))
 		return log(`NOTE`, `Lesson ${id} is already deleted.`);
 	const guild = client.guilds.resolve(config.guild);
 	const l = lessons.ongoing[id];
-	if(!(await confirm(guild.channels.resolve(chId), authorId, `<@${authorId}>, Завершить пару **${l.subj}** (**${l.type}**)?`, 600000)))
+	if(forced || !(await confirm(guild.channels.resolve(chId), authorId, `<@${authorId}>, Завершить пару **${l.subj}** (**${l.type}**)?`, 600000)))
 		return log(`NOTE`, `Lesson ${id} did not end.`);
 	let embed = {
 		title: `**Пара завершена: ${l.subj} ${l.type}**`,
@@ -184,6 +184,12 @@ async function checkAttended() {
 		const vc = client.guilds.resolve(config.guild).channels.resolve(id);
 		if(!vc) {
 			log(`ERROR`, `Failed to resolve vc for lesson atdcheck ${id} of ${teachers.obj[lessons.ongoing[id].teacher].name}`);
+			continue;
+		}
+		// end lesson if nobody in and time passed
+		if(Date.now() > (lessons.ongoing[id].start.valueOf() + lessons.ongoing[id].start.duration + 60000)
+			&& vc.members.array().length < 2) {
+			exports.end(id, lessons.ongoing[id].tc, null, true);
 			continue;
 		}
 		if(!vc.members.has(lessons.ongoing[id].teacher)) {
