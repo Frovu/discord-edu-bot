@@ -128,7 +128,7 @@ module.exports.end = async function(id, chId, authorId, forced=false) {
 		return log(`NOTE`, `Lesson ${id} is already deleted.`);
 	const guild = client.guilds.resolve(config.guild);
 	const l = lessons.ongoing[id];
-	if(forced || !(await confirm(guild.channels.resolve(chId), authorId, `<@${authorId}>, Завершить пару **${l.subj}** (**${l.type}**)?`, 600000)))
+	if(!forced && !(await confirm(guild.channels.resolve(chId), authorId, `<@${authorId}>, Завершить пару **${l.subj}** (**${l.type}**)?`, 600000)))
 		return log(`NOTE`, `Lesson ${id} did not end.`);
 	let embed = {
 		title: `**Пара завершена: ${l.subj} ${l.type}**`,
