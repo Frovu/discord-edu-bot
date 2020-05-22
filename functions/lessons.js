@@ -187,7 +187,7 @@ async function checkAttended() {
 			continue;
 		}
 		// end lesson if nobody in and time passed
-		if(Date.now() > (lessons.ongoing[id].start.valueOf() + lessons.ongoing[id].start.duration + 60000)
+		if(Date.now() > (lessons.ongoing[id].start.valueOf() + lessons.ongoing[id].duration + 60000)
 			&& vc.members.array().length < 2) {
 			exports.end(id, lessons.ongoing[id].tc, null, true);
 			continue;
